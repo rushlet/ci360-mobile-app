@@ -2,15 +2,24 @@ package uk.ac.brighton.rlr17uni.inspirgram;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.squareup.picasso.Picasso;
+
+import java.io.File;
 import java.io.IOException;
+
+import static android.R.attr.path;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        DatabaseController databasecontroller =  new DatabaseController(this);
+        databasecontroller.getWritableDatabase();
     }
 
     public void openGallery(View view) {
@@ -41,10 +52,17 @@ public class MainActivity extends AppCompatActivity {
 
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-                // Log.d(TAG, String.valueOf(bitmap));
 
                 ImageView imageView = (ImageView) findViewById(R.id.imageView);
                 imageView.setImageBitmap(bitmap);
+
+
+//                bitmap too large to be uploaded into a texture
+//                Bitmap d= BitmapFactory.decodeFile(String.valueOf(bitmap));
+//                int newHeight = (int) ( d.getHeight() * (512.0 / d.getWidth()) );
+//                Bitmap putImage = Bitmap.createScaledBitmap(d, 512, newHeight, true);
+//                imageView.setImageBitmap(putImage);
+                
             } catch (IOException e) {
                 e.printStackTrace();
             }
