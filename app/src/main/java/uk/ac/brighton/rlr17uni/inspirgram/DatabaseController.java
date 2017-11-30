@@ -1,10 +1,14 @@
 package uk.ac.brighton.rlr17uni.inspirgram;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.util.Log;
+
+import java.io.File;
 
 /**
  * Created by rushlet on 27/11/2017.
@@ -12,7 +16,7 @@ import android.util.Log;
 
 public class DatabaseController extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "inspirgram.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static final String TAG = "databasecontroller";
 
     private static final String TABLE_CHALLENGES = "challenges";
@@ -27,7 +31,7 @@ public class DatabaseController extends SQLiteOpenHelper {
 
     private static final String DATABASE_CREATE = "CREATE TABLE " + TABLE_CHALLENGES
             + " ("
-            + COLUMN_ID + " integer primary key autoincrement, "
+            + COLUMN_ID + " text, "
             + COLUMN_NAME + " text, "
             + COLUMN_TRIGGERED + " boolean, "
             + COLUMN_COMPLETE + " boolean, "
@@ -41,6 +45,9 @@ public class DatabaseController extends SQLiteOpenHelper {
     public DatabaseController(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         Log.i(TAG, "database controller super thing called");
+        checkDatabase(context, DATABASE_NAME);
+//        Log.d(TAG, "check db: " + checkDatabase(context, DATABASE_NAME));
+        createChallenge("challenge01", "SHADOW");
     }
 
     @Override
@@ -48,12 +55,42 @@ public class DatabaseController extends SQLiteOpenHelper {
         // create db
         Log.i(TAG, "database create: " + DATABASE_CREATE);
         db.execSQL(DATABASE_CREATE);
-        // add entries
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(DATABASE_DELETE);
         onCreate(db);
+    }
+
+    private boolean checkDatabase(Context context, String dbName) {
+        File dbFile = context.getDatabasePath(dbName);
+        return dbFile.exists();
+    }
+
+    public long createChallenge(String id, String name) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_ID, id);
+        values.put(COLUMN_NAME, name);
+        values.put(COLUMN_TRIGGERED, false);
+        values.put(COLUMN_COMPLETE, false);
+        values.put(COLUMN_MAIN_CHALLENGE, true);
+        return db.insert(TABLE_CHALLENGES, null, values);
+    }
+
+    public Challenge getChallenge(String id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] columns = {COLUMN_NAME, COLUMN_MAIN_CHALLENGE, COLUMN_COMPLETE, COLUMN_TRIGGERED};
+        String whereClause = COLUMN_ID + "=?";
+        String[] whereArgs = {id};
+        Cursor cursor = db.query(TABLE_CHALLENGES, columns, whereClause, whereArgs, null, null, null, null);
+        cursor.moveToFirst();
+        Challenge challenge = new Challenge();
+        challenge.setId(cursor.getString(0));
+        challenge.setName(cursor.getString(1));
+        Log.d("getChallenge("+id+")", challenge.toString());
+        cursor.close();
+        return challenge;
     }
 }

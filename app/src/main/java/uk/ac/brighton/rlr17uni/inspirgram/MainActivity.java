@@ -24,6 +24,7 @@ import static android.R.attr.path;
 public class MainActivity extends AppCompatActivity {
 
     private static final int PICK_IMAGE = 1;
+    private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +32,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         DatabaseController databasecontroller =  new DatabaseController(this);
         databasecontroller.getWritableDatabase();
+        databasecontroller.getChallenge("challenge01");
+        Log.d(TAG, "check db: " + databasecontroller.getChallenge("challenge01"));
+
     }
 
     public void openGallery(View view) {
