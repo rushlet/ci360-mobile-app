@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
@@ -30,10 +31,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        DatabaseController databasecontroller =  new DatabaseController(this);
-        databasecontroller.getWritableDatabase();
-        databasecontroller.getChallenge("challenge01");
     }
+
+//    public void onActivityCreated(Bundle savedInstanceState) {
+//        DatabaseController databasecontroller =  new DatabaseController(this);
+//        Challenge currentChallenge = databasecontroller.getChallenge("challenge01");
+//        TextView text = (TextView) findViewById(R.id.challengeText);
+//        text.setText(currentChallenge.getName());
+//    }
 
     public void openGallery(View view) {
         Intent intent = new Intent();

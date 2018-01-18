@@ -51,7 +51,6 @@ public class DatabaseController extends SQLiteOpenHelper {
         boolean checkDatabase = checkDatabase(context, DATABASE_NAME);
 //        Log.d(TAG, "check db: " + checkDatabase(context, DATABASE_NAME));
         long createChallenge = createChallenge("challenge01", "SHADOW");
-        Challenge currentChallenge = getChallenge("challenge01");
     }
 
     @Override
@@ -85,7 +84,7 @@ public class DatabaseController extends SQLiteOpenHelper {
 
     public Challenge getChallenge(String id) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String[] columns = {COLUMN_NAME, COLUMN_MAIN_CHALLENGE, COLUMN_COMPLETE, COLUMN_TRIGGERED};
+        String[] columns = {COLUMN_ID, COLUMN_NAME, COLUMN_MAIN_CHALLENGE, COLUMN_COMPLETE, COLUMN_TRIGGERED};
         String whereClause = COLUMN_ID + "=?";
         String[] whereArgs = {id};
         Cursor cursor = db.query(TABLE_CHALLENGES, columns, whereClause, whereArgs, null, null, null, null);
@@ -94,7 +93,7 @@ public class DatabaseController extends SQLiteOpenHelper {
         cursor.close();
         return challenge;
     }
-    
+
     // set next challenge - get first entry (or randomly select?) where complete is false or empty
 
     // mark challenge as complete
