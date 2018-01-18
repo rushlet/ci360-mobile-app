@@ -15,9 +15,10 @@ import java.io.File;
  */
 
 public class DatabaseController extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "inspirgram.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final String DATABASE_NAME = "test.db";
+    private static final int DATABASE_VERSION = 1;
     private static final String TAG = "databasecontroller";
+    private Context context;
 
     private static final String TABLE_CHALLENGES = "challenges";
     private static final String COLUMN_ID = "challenge_id";
@@ -45,15 +46,18 @@ public class DatabaseController extends SQLiteOpenHelper {
     public DatabaseController(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         Log.i(TAG, "database controller super thing called");
-        checkDatabase(context, DATABASE_NAME);
+        this.context = context;
+        SQLiteDatabase db = this.getWritableDatabase();
+        boolean checkDatabase = checkDatabase(context, DATABASE_NAME);
 //        Log.d(TAG, "check db: " + checkDatabase(context, DATABASE_NAME));
-        createChallenge("challenge01", "SHADOW");
+        long createChallenge = createChallenge("challenge01", "SHADOW");
+        Challenge currentChallenge = getChallenge("challenge01");
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         // create db
-        Log.i(TAG, "database create: " + DATABASE_CREATE);
+        Log.i(TAG, "db on create called");
         db.execSQL(DATABASE_CREATE);
     }
 
@@ -86,11 +90,16 @@ public class DatabaseController extends SQLiteOpenHelper {
         String[] whereArgs = {id};
         Cursor cursor = db.query(TABLE_CHALLENGES, columns, whereClause, whereArgs, null, null, null, null);
         cursor.moveToFirst();
-        Challenge challenge = new Challenge();
-        challenge.setId(cursor.getString(0));
-        challenge.setName(cursor.getString(1));
-        Log.d("getChallenge("+id+")", challenge.toString());
+        Challenge challenge = new Challenge(cursor.getString(0), cursor.getString(1));
         cursor.close();
         return challenge;
     }
+    
+    // set next challenge - get first entry (or randomly select?) where complete is false or empty
+
+    // mark challenge as complete
+
+    // get burst challenge
+
+    //
 }

@@ -33,8 +33,6 @@ public class MainActivity extends AppCompatActivity {
         DatabaseController databasecontroller =  new DatabaseController(this);
         databasecontroller.getWritableDatabase();
         databasecontroller.getChallenge("challenge01");
-        Log.d(TAG, "check db: " + databasecontroller.getChallenge("challenge01"));
-
     }
 
     public void openGallery(View view) {
@@ -42,6 +40,10 @@ public class MainActivity extends AppCompatActivity {
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, ""), PICK_IMAGE);
+    }
+
+    public void writeToFile(String input) {
+
     }
 
 //    http://codetheory.in/android-pick-select-image-from-gallery-with-intents/
