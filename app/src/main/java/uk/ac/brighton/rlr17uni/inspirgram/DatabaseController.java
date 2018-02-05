@@ -49,7 +49,6 @@ public class DatabaseController extends SQLiteOpenHelper {
         this.context = context;
         SQLiteDatabase db = this.getWritableDatabase();
         boolean checkDatabase = checkDatabase(context, DATABASE_NAME);
-//        Log.d(TAG, "check db: " + checkDatabase(context, DATABASE_NAME));
         long createChallenge = createChallenge("challenge01", "SHADOW");
     }
 
