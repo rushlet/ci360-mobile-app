@@ -45,15 +45,8 @@ public class ImageAdapter extends BaseAdapter {
     // create a new ImageView for each item referenced by the Adapter
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        int listSize = mImages.size();
-        for (int i = 0; i<listSize; i++) {
-            Uri uri = Uri.fromFile(new File(mImages.get(i).path));
-//            String selectedImagePath = ImageFilePath.getPath(getApplicationContext(), uri);
-//            File imageFile =   new File(selectedImagePath);
-            currentURI = uri;
-//            Bitmap bitmap  =   BitmapFactory.decodeFile(imageFile.getAbsolutePath());
-//            currentImage = bitmap;
-        }
+        Uri uri = Uri.fromFile(new File(mImages.get(position).path));
+
 
         ImageView imageView;
         if (convertView == null) {
@@ -65,7 +58,7 @@ public class ImageAdapter extends BaseAdapter {
             imageView = (ImageView) convertView;
         }
 
-        imageView.setImageURI(currentURI);
+        imageView.setImageURI(uri);
 
         return imageView;
     };
