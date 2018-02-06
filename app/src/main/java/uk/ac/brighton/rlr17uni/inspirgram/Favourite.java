@@ -3,6 +3,8 @@ package uk.ac.brighton.rlr17uni.inspirgram;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,7 +31,7 @@ public class Favourite extends Activity {
         ArrayList<Image> images = getIntent().getParcelableArrayListExtra("image_uris");
 
         GridView gridview = (GridView) findViewById(R.id.gridview);
-        gridview.setAdapter(new ImageAdapter(this));
+        gridview.setAdapter(new ImageAdapter(this, images));
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
@@ -39,4 +41,6 @@ public class Favourite extends Activity {
             }
         });
     }
+
+
 }

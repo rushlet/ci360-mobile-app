@@ -65,13 +65,8 @@ public class MainActivity extends AppCompatActivity implements Parcelable {
             //The array list has the image paths of the selected images
             ArrayList<Image> images = data.getParcelableArrayListExtra(Constants.INTENT_EXTRA_IMAGES);
             Intent openFavourites = new Intent(this, Favourite.class);
-//            int listSize = images.size();
             Bundle b=new Bundle();
             SELECTED_IMAGES_ARRAY = images;
-//            for (int i = 0; i<listSize; i++){
-//                Uri uri = Uri.fromFile(new File(images.get(i).path));
-//                SELECTED_IMAGES_ARRAY.add(uri);
-//            }
             b.putParcelableArrayList("image_uris", SELECTED_IMAGES_ARRAY);
             openFavourites.putExtras(b);
             startActivity(openFavourites);
