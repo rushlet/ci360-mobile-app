@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -16,12 +17,14 @@ import java.util.ArrayList;
 
 import com.darsh.multipleimageselect.models.Image;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 /**
  * Created by rushlet on 05/02/2018.
  */
 
 public class ImageAdapter extends BaseAdapter {
+    private static final String TAG = ImageAdapter.class.getSimpleName();
     private Context mContext;
     private ArrayList<Image> mImages;
     private Bitmap currentImage;
@@ -45,21 +48,31 @@ public class ImageAdapter extends BaseAdapter {
     }
 
     // create a new ImageView for each item referenced by the Adapter
+    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
         ImageView imageView;
         if (convertView == null) {
             imageView = new ImageView(mContext);
-            imageView.setLayoutParams(new GridView.LayoutParams(350, 350));
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            imageView.setPadding(8, 8, 8, 8);
+            imageView.setLayoutParams(new GridView.LayoutParams(336, 336));
+//            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+//            imageView.setPadding(8, 8, 8, 8);
         } else {
             imageView = (ImageView) convertView;
         }
 
         Uri uri = Uri.fromFile(new File(mImages.get(position).path));
-
-        imageView.setImageURI(uri);
+        Log.i(TAG, "getView: uri: " + uri);
+        Log.i(TAG, "getView: position: " + position);
+        Picasso.with(mContext)
+                .load(uri)
+                .placeholder(R.drawable.wallpaper)
+                .error(R.drawable.image_placeholder)
+                .transform(new HighlightTransformation(mContext))
+                .fit()
+                .centerCrop()
+                .into(imageView);
+//        imageView.setImageURI(uri);
 
         return imageView;
     };
