@@ -34,10 +34,9 @@ public class Favourite extends Activity {
         gridview.setAdapter(new ImageAdapter(this, images));
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v,
-                                    int position, long id) {
-                Toast.makeText(Favourite.this, "" + position,
-                        Toast.LENGTH_SHORT).show();
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                //add border to selected image (and not any other image)
+                //enable next button
             }
         });
     }

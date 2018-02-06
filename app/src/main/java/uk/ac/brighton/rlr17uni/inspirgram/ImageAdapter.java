@@ -3,6 +3,7 @@ package uk.ac.brighton.rlr17uni.inspirgram;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import com.darsh.multipleimageselect.models.Image;
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by rushlet on 05/02/2018.
@@ -45,18 +47,17 @@ public class ImageAdapter extends BaseAdapter {
     // create a new ImageView for each item referenced by the Adapter
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        Uri uri = Uri.fromFile(new File(mImages.get(position).path));
-
-
         ImageView imageView;
         if (convertView == null) {
             imageView = new ImageView(mContext);
-            imageView.setLayoutParams(new GridView.LayoutParams(85, 85));
+            imageView.setLayoutParams(new GridView.LayoutParams(350, 350));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             imageView.setPadding(8, 8, 8, 8);
         } else {
             imageView = (ImageView) convertView;
         }
+
+        Uri uri = Uri.fromFile(new File(mImages.get(position).path));
 
         imageView.setImageURI(uri);
 
