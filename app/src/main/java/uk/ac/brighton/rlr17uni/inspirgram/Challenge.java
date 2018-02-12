@@ -9,8 +9,8 @@ import android.widget.TextView;
  */
 
 public class Challenge {
-    private String id;
-    private String name;
+    public static String id;
+    public static String name;
 
     public Challenge(String id, String name) {
         this.id = id;
@@ -24,11 +24,5 @@ public class Challenge {
     public String getName() {
         return name;
     }
-
-    public void updateChallengeOnScreen (Bundle saveInstanceState){
-        String challenge = this.getName();
-
-    }
-
 
 }

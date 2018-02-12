@@ -3,6 +3,7 @@ package uk.ac.brighton.rlr17uni.inspirgram;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -23,6 +24,11 @@ public class Favourite extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favourite);
+
+        final String TAG = "isFavourite";
+
+
+        final DatabaseController databasecontroller =  new DatabaseController(this);
 
         final ArrayList<Image> images = getIntent().getParcelableArrayListExtra("image_uris");
 
@@ -58,6 +64,20 @@ public class Favourite extends Activity {
                     // upload images to db
                     Toast.makeText(Favourite.this, "Favourite: " + favourite,
                             Toast.LENGTH_SHORT).show();
+                    boolean isFavourite;
+
+                    // new runnable/thread
+                    for (int i = 0; i < images.size(); i++) {
+                        Uri uri = Uri.fromFile(new File(images.get(i).path));
+                        if (i == favourite) {
+                            isFavourite = true;
+                        } else {
+                            isFavourite = false;
+                        }
+                        Log.i(TAG, "" + isFavourite);
+                        databasecontroller.uploadPhotos(i, uri, isFavourite);
+                    }
+                    databasecontroller.getNumberOfPhotosUploaded();
                 }
             }
         });
