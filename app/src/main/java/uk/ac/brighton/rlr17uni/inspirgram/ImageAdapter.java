@@ -1,9 +1,6 @@
 package uk.ac.brighton.rlr17uni.inspirgram;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.util.Log;
 import android.view.View;
@@ -17,7 +14,6 @@ import java.util.ArrayList;
 
 import com.darsh.multipleimageselect.models.Image;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Transformation;
 
 /**
  * Created by rushlet on 05/02/2018.
@@ -27,8 +23,6 @@ public class ImageAdapter extends BaseAdapter {
     private static final String TAG = ImageAdapter.class.getSimpleName();
     private Context mContext;
     private ArrayList<Image> mImages;
-    private Bitmap currentImage;
-    private Uri currentURI;
 
     public ImageAdapter(Context c, ArrayList<Image> images) {
         mContext = c;
@@ -56,8 +50,6 @@ public class ImageAdapter extends BaseAdapter {
             imageView = new ImageView(mContext);
             imageView.setLayoutParams(new GridView.LayoutParams(336, 336));
             imageView.setId(position);
-//            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-//            imageView.setPadding(8, 8, 8, 8);
         } else {
             imageView = (ImageView) convertView;
         }
@@ -72,8 +64,7 @@ public class ImageAdapter extends BaseAdapter {
                 .fit()
                 .centerCrop()
                 .into(imageView);
-//        imageView.setImageURI(uri);
 
         return imageView;
-    };
+    }
 }

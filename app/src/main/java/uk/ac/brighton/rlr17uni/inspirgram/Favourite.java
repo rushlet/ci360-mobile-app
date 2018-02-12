@@ -1,11 +1,11 @@
 package uk.ac.brighton.rlr17uni.inspirgram;
 
 import android.app.Activity;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -26,14 +26,15 @@ public class Favourite extends Activity {
 
         final ArrayList<Image> images = getIntent().getParcelableArrayListExtra("image_uris");
 
-        final GridView gridview = findViewById(R.id.gridview);
+        final GridView gridview = findViewById(R.id.favourite__gridview);
         gridview.setAdapter(new ImageAdapter(this, images));
 
-        final ImageView favouriteImage = findViewById(R.id.favouriteImage);
+        final ImageView favouriteImage = findViewById(R.id.favourite__selectedImage);
+
+        final Button nextButton = findViewById(R.id.favourite__nextButton);
 //
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-//                Drawable highlight = getResources().getDrawable( R.drawable.highlight);
                 favourite = position;
                 Uri uri = Uri.fromFile(new File(images.get(position).path));
 
@@ -44,12 +45,20 @@ public class Favourite extends Activity {
                         .fit()
                         .centerCrop()
                         .into(favouriteImage);
+            }
+        });
 
-//                v.setBackground(highlight);
-                Toast.makeText(Favourite.this, "" + position,
-                        Toast.LENGTH_SHORT).show();
-                //add border to selected image (and not any other image)
-                //enable next button
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (favourite == -1) {
+                    Toast.makeText(Favourite.this, "Pick a favourite",
+                            Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    // upload images to db
+                    Toast.makeText(Favourite.this, "Favourite: " + favourite,
+                            Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

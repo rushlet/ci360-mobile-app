@@ -7,14 +7,13 @@
     tools:context="uk.ac.brighton.rlr17uni.inspirgram.MainActivity">
 
     <TextView
-        android:id="@+id/editText"
+        android:id="@+id/favourite__selectText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
         android:ems="10"
-        android:inputType="textPersonName"
         android:text="@string/favourite_title"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
@@ -24,19 +23,34 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/favourite__nextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Next"
+        android:text="@string/next"
         android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="8dp" />
+        android:layout_marginBottom="8dp"
+        />
+
+    <ImageView
+        android:id="@+id/favourite__selectedImage"
+        android:layout_width="218dp"
+        android:layout_height="175dp"
+        app:srcCompat="@drawable/highlight"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/favourite__gridview"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/favourite__selectText" />
 
     <GridView
-        android:id="@+id/gridview"
+        android:id="@+id/favourite__gridview"
         android:layout_width="341dp"
         android:layout_height="280dp"
         android:layout_marginBottom="8dp"
@@ -53,23 +67,7 @@
         app:layout_constraintHorizontal_bias="0.666"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <ImageView
-        android:id="@+id/favouriteImage"
-        android:layout_width="218dp"
-        android:layout_height="175dp"
-        app:srcCompat="@drawable/highlight"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/gridview"
-        app:layout_constraintHorizontal_bias="0.503"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/editText"
-        tools:layout_editor_absoluteY="35dp" />
+        app:layout_constraintTop_toBottomOf="@+id/favourite__selectedImage"
+        app:layout_constraintVertical_bias="0.0" />
 
 </android.support.constraint.ConstraintLayout>
