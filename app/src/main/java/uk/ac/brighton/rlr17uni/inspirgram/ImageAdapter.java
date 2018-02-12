@@ -55,6 +55,7 @@ public class ImageAdapter extends BaseAdapter {
         if (convertView == null) {
             imageView = new ImageView(mContext);
             imageView.setLayoutParams(new GridView.LayoutParams(336, 336));
+            imageView.setId(position);
 //            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 //            imageView.setPadding(8, 8, 8, 8);
         } else {
@@ -68,7 +69,6 @@ public class ImageAdapter extends BaseAdapter {
                 .load(uri)
                 .placeholder(R.drawable.wallpaper)
                 .error(R.drawable.image_placeholder)
-                .transform(new HighlightTransformation(mContext))
                 .fit()
                 .centerCrop()
                 .into(imageView);
