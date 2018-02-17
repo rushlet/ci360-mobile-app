@@ -27,7 +27,6 @@ public class Favourite extends Activity {
 
         final String TAG = "isFavourite";
 
-
         final DatabaseController databasecontroller =  new DatabaseController(this);
 
         final ArrayList<Image> images = getIntent().getParcelableArrayListExtra("image_uris");
