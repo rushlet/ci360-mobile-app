@@ -23,6 +23,7 @@ import com.darsh.multipleimageselect.models.Image;
 import java.io.File;
 import java.util.ArrayList;
 
+import static uk.ac.brighton.rlr17uni.inspirgram.R.id.default_activity_button;
 import static uk.ac.brighton.rlr17uni.inspirgram.R.id.parent;
 
 public class MainActivity extends AppCompatActivity implements Parcelable {
@@ -61,12 +62,24 @@ public class MainActivity extends AppCompatActivity implements Parcelable {
         String[] pagesArray = { "Home", "Inspire Me", "Timeline" };
         mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, pagesArray);
         mDrawerList.setAdapter(mAdapter);
-        Log.i("help", "i'm here");
 
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(MainActivity.this, "Time for an upgrade!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "id: "+id + " position: " + position, Toast.LENGTH_SHORT).show();
+                switch(position) {
+                    case 0:
+                        setContentView(R.layout.activity_main);
+                        break;
+                    case 1:
+                        setContentView(R.layout.activity_inspiration_feed);
+                        break;
+                    case 2:
+                        setContentView(R.layout.activity_timeline);
+                        break;
+                    default:
+                        break;
+                }
             }
         });
     }
