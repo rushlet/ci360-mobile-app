@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="uk.ac.brighton.rlr17uni.inspirgram.Home"
+    tools:context="uk.ac.brighton.rlr17uni.inspirgram.HomeFragment"
     android:id="@+id/home_fragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -16,32 +16,32 @@
             android:id="@+id/intro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="80dp"
             android:gravity="center"
             android:text="@string/challenge_intro"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/challengeText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="32dp"
             android:gravity="center"
             android:text="@string/challenge"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/intro"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp" />
+            app:layout_constraintTop_toBottomOf="@+id/intro" />
 
         <ImageButton
             android:id="@+id/imageButton_gallery"
@@ -50,7 +50,6 @@
             android:layout_marginBottom="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
-            android:onClick="openGallery"
             android:scaleType="fitCenter"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"

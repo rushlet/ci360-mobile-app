@@ -37,8 +37,6 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-//        View content = (ListView)findViewById(R.id.fragment_placeholder);
-//        setContentView(R.layout.fragment_home2);
 
         Fragment fragment = new HomeFragment();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
