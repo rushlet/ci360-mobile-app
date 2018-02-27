@@ -55,29 +55,28 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(MainActivity.this, "id: "+id + " position: " + position, Toast.LENGTH_SHORT).show();
-                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 switch(position) {
                     case 0:
-                        drawer.closeDrawer(GravityCompat.START);
-                        setContentView(R.layout.activity_main);
-
+                        Fragment fragment = new HomeFragment();
+                        ft.replace(R.id.fragment_placeholder, fragment);
+                        ft.commit();
                         break;
                     case 1:
-//                        setContentView(R.layout.activity_inspiration_feed);
-                        Intent inspirationIntent = new Intent(view.getContext(), InspirationFeed.class);
-
-                        drawer.closeDrawer(GravityCompat.START);
-                        startActivity(inspirationIntent);
+                        Fragment inspirationFragment = new InspirationFragment();
+                        ft.replace(R.id.fragment_placeholder, inspirationFragment);
+                        ft.commit();
                         break;
                     case 2:
-                        Intent timelineIntent = new Intent(view.getContext(), Timeline.class);
-
-                        drawer.closeDrawer(GravityCompat.START);
-                        startActivity(timelineIntent);
+                        Fragment timelineFragment = new TimelineFragment();
+                        ft.replace(R.id.fragment_placeholder, timelineFragment);
+                        ft.commit();
                         break;
                     default:
                         break;
                 }
+                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                drawer.closeDrawer(GravityCompat.START);
             }
         });
     }
