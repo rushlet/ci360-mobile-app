@@ -40,8 +40,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".Favourite" />
-        <activity android:name=".InspirationFeed" />
-        <activity android:name=".Timeline"></activity>
     </application>
 
 </manifest>

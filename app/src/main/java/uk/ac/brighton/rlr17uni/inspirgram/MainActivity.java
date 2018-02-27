@@ -1,6 +1,5 @@
 package uk.ac.brighton.rlr17uni.inspirgram;
 
-import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -43,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
         ft.replace(R.id.fragment_placeholder, fragment);
         ft.commit();
     }
+
+//    http://blog.teamtreehouse.com/add-navigation-drawer-android
 
     private void addDrawerItems() {
         String[] pagesArray = { "Home", "Inspire Me", "Timeline" };
@@ -111,12 +112,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        // Activate the navigation drawer toggle
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
