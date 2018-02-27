@@ -1,106 +1,123 @@
 package uk.ac.brighton.rlr17uni.inspirgram;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
-import android.os.Environment;
-import android.os.Parcel;
-import android.os.Parcelable;
-import android.provider.MediaStore;
-import android.support.v4.content.FileProvider;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
 
-import com.darsh.multipleimageselect.activities.AlbumSelectActivity;
-import com.darsh.multipleimageselect.helpers.Constants;
-import com.darsh.multipleimageselect.models.Image;
-import com.squareup.picasso.Picasso;
+public class MainActivity extends AppCompatActivity {
 
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import static android.R.attr.logo;
-import static android.R.attr.path;
-
-public class MainActivity extends AppCompatActivity implements Parcelable {
-
-    private static final int PICK_IMAGE = 1;
-    private static final String TAG = "MainActivity";
-    static final int REQUEST_IMAGE_CAPTURE = 1;
-    static final int REQUEST_TAKE_PHOTO = 1;
-    ArrayList<Image> SELECTED_IMAGES_ARRAY;
+    private ListView mDrawerList;
+    private ArrayAdapter<String> mAdapter;
+    private ActionBarDrawerToggle mDrawerToggle;
+    private DrawerLayout mDrawerLayout;
+    private String mActivityTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        DatabaseController databasecontroller =  new DatabaseController(this);
-        Challenge currentChallenge = databasecontroller.getChallenge("challenge01");
-        TextView text = (TextView) findViewById(R.id.challengeText);
-        text.setText(currentChallenge.getName());
+        mDrawerList = (ListView)findViewById(R.id.navList);
+        mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        mActivityTitle = getTitle().toString();
+
+        addDrawerItems();
+        setupDrawer();
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
+
+        Fragment fragment = new HomeFragment();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.fragment_placeholder, fragment);
+        ft.commit();
     }
 
-    //    https://github.com/darsh2/MultipleImageSelect
-    public void openGallery(View view) {
-        Intent intent = new Intent(this, AlbumSelectActivity.class);
-        intent.putExtra(Constants.INTENT_EXTRA_LIMIT, 10);
-        startActivityForResult(intent, Constants.REQUEST_CODE);
+//    http://blog.teamtreehouse.com/add-navigation-drawer-android
+
+    private void addDrawerItems() {
+        String[] pagesArray = { "Home", "Inspire Me", "Timeline" };
+        mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, pagesArray);
+        mDrawerList.setAdapter(mAdapter);
+
+        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(MainActivity.this, "id: "+id + " position: " + position, Toast.LENGTH_SHORT).show();
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                switch(position) {
+                    case 0:
+                        Fragment fragment = new HomeFragment();
+                        ft.replace(R.id.fragment_placeholder, fragment);
+                        ft.commit();
+                        mActivityTitle = getResources().getString(R.string.app_name);
+                        break;
+                    case 1:
+                        Fragment inspirationFragment = new InspirationFragment();
+                        ft.replace(R.id.fragment_placeholder, inspirationFragment);
+                        ft.commit();
+                        mActivityTitle = getResources().getString(R.string.menu_inspire);
+                        break;
+                    case 2:
+                        Fragment timelineFragment = new TimelineFragment();
+                        ft.replace(R.id.fragment_placeholder, timelineFragment);
+                        ft.commit();
+                        mActivityTitle = getResources().getString(R.string.menu_timeline);
+                        break;
+                    default:
+                        break;
+                }
+                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                drawer.closeDrawer(GravityCompat.START);
+            }
+        });
+    }
+
+    private void setupDrawer() {
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close) {
+
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                getSupportActionBar().setTitle(R.string.menu);
+                invalidateOptionsMenu();
+            }
+
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                getSupportActionBar().setTitle(mActivityTitle);
+                invalidateOptionsMenu();
+            }
+        };
+
+        mDrawerToggle.setDrawerIndicatorEnabled(true);
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == Constants.REQUEST_CODE && resultCode == RESULT_OK && data != null) {
-            //The array list has the image paths of the selected images
-            ArrayList<Image> images = data.getParcelableArrayListExtra(Constants.INTENT_EXTRA_IMAGES);
-            Intent openFavourites = new Intent(this, Favourite.class);
-            Bundle b=new Bundle();
-            SELECTED_IMAGES_ARRAY = images;
-            b.putParcelableArrayList("image_uris", SELECTED_IMAGES_ARRAY);
-            openFavourites.putExtras(b);
-            startActivity(openFavourites);
-        }
-    }
-
-    // using android parcelable code generator
-
-    @Override
-    public int describeContents() {
-        return 0;
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawerToggle.syncState();
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeTypedList(this.SELECTED_IMAGES_ARRAY);
-    }
-
-    public MainActivity() {
-    }
-
-    protected MainActivity(Parcel in) {
-        this.SELECTED_IMAGES_ARRAY = in.createTypedArrayList(Image.CREATOR);
-    }
-
-    public static final Creator<MainActivity> CREATOR = new Creator<MainActivity>() {
-        @Override
-        public MainActivity createFromParcel(Parcel source) {
-            return new MainActivity(source);
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
         }
 
-        @Override
-        public MainActivity[] newArray(int size) {
-            return new MainActivity[size];
-        }
-    };
+        return super.onOptionsItemSelected(item);
+    }
 }
+
