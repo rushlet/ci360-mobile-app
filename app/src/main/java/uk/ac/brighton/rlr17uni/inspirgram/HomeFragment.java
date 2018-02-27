@@ -1,9 +1,7 @@
 package uk.ac.brighton.rlr17uni.inspirgram;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -11,10 +9,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.darsh.multipleimageselect.activities.AlbumSelectActivity;
 import com.darsh.multipleimageselect.helpers.Constants;
@@ -24,15 +20,6 @@ import java.util.ArrayList;
 
 import static android.app.Activity.RESULT_OK;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link HomeFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link HomeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class HomeFragment extends Fragment implements Parcelable{
     private static final int PICK_IMAGE = 1;
     private static final String TAG = "MainActivity";
@@ -78,7 +65,6 @@ public class HomeFragment extends Fragment implements Parcelable{
         return rootView;
     }
 
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -87,21 +73,6 @@ public class HomeFragment extends Fragment implements Parcelable{
     @Override
     public void onDetach() {
         super.onDetach();
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
     }
 
     //    https://github.com/darsh2/MultipleImageSelect
