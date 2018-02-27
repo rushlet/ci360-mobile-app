@@ -59,17 +59,19 @@ public class MainActivity extends AppCompatActivity {
                         Fragment fragment = new HomeFragment();
                         ft.replace(R.id.fragment_placeholder, fragment);
                         ft.commit();
-                        mActivityTitle = getTitle().toString();
+                        mActivityTitle = getResources().getString(R.string.app_name);
                         break;
                     case 1:
                         Fragment inspirationFragment = new InspirationFragment();
                         ft.replace(R.id.fragment_placeholder, inspirationFragment);
                         ft.commit();
+                        mActivityTitle = getResources().getString(R.string.menu_inspire);
                         break;
                     case 2:
                         Fragment timelineFragment = new TimelineFragment();
                         ft.replace(R.id.fragment_placeholder, timelineFragment);
                         ft.commit();
+                        mActivityTitle = getResources().getString(R.string.menu_timeline);
                         break;
                     default:
                         break;
