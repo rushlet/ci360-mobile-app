@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
                         Fragment fragment = new HomeFragment();
                         ft.replace(R.id.fragment_placeholder, fragment);
                         ft.commit();
+                        mActivityTitle = getTitle().toString();
                         break;
                     case 1:
                         Fragment inspirationFragment = new InspirationFragment();
