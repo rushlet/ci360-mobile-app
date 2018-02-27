@@ -3,6 +3,7 @@ package uk.ac.brighton.rlr17uni.inspirgram;
 import android.content.Intent;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +22,7 @@ import com.darsh.multipleimageselect.helpers.Constants;
 import com.darsh.multipleimageselect.models.Image;
 
 import java.io.File;
+import java.sql.Time;
 import java.util.ArrayList;
 
 import static uk.ac.brighton.rlr17uni.inspirgram.R.id.default_activity_button;
@@ -72,14 +74,18 @@ public class MainActivity extends AppCompatActivity implements Parcelable {
                         setContentView(R.layout.activity_main);
                         break;
                     case 1:
-                        setContentView(R.layout.activity_inspiration_feed);
+                        Intent inspirationIntent = new Intent(view.getContext(), InspirationFeed.class);
+                        startActivity(inspirationIntent);
                         break;
                     case 2:
-                        setContentView(R.layout.activity_timeline);
+                        Intent timelineIntent = new Intent(view.getContext(), Timeline.class);
+                        startActivity(timelineIntent);
                         break;
                     default:
                         break;
                 }
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
             }
         });
     }
