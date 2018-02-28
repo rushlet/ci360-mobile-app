@@ -1,12 +1,18 @@
 package uk.ac.brighton.rlr17uni.inspirgram;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -15,12 +21,19 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Array;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
 
 
 /**
@@ -64,7 +77,7 @@ public class InspirationFragment extends Fragment {
         String baseURL = "https://api.flickr.com/services/rest/?method=flickr.photos.search";
         String key =  "60dd9c77c36b4684185bb29b88d99c4c";
         String url = baseURL + "&api_key=" + key +"&tags=" + tag +"&per_page=10&format=json&nojsoncallback=1";
-        final TextView mTextView = (TextView) rootview.findViewById(R.id.text);
+        final TextView mTextView = (TextView) rootview.findViewById(R.id.inspiration__text);
 
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(getContext());
@@ -79,7 +92,7 @@ public class InspirationFragment extends Fragment {
                             obj = new JSONObject(response);
                             JSONObject photos = obj.getJSONObject("photos");
                             JSONArray photoArray = photos.getJSONArray("photo");
-                            String[] photoURLs = new String[10];
+                            String[] photoURLs = new String [10];
                             String urls = "";
                             for(int i = 0; i < photoArray.length(); i++) {
                                 JSONObject photo = photoArray.getJSONObject(i);
@@ -87,7 +100,9 @@ public class InspirationFragment extends Fragment {
                                 photoURLs[i] = url;
                                 urls = urls + url + ", ";
                             }
-                            mTextView.setText("Response is: "+ urls);
+                            final GridView gridview = getView().findViewById(R.id.inspiration__gridview);
+                            gridview.setAdapter(new FlickrImageAdapter(getContext(), photoURLs));
+                            mTextView.setText("Shadow");
                         } catch (JSONException e) {
                             e.printStackTrace();
                             mTextView.setText("Response is: "+ response);
