@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,13 +17,17 @@ import com.darsh.multipleimageselect.activities.AlbumSelectActivity;
 import com.darsh.multipleimageselect.helpers.Constants;
 import com.darsh.multipleimageselect.models.Image;
 
+import java.text.ParseException;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import static android.app.Activity.RESULT_OK;
 
 public class HomeFragment extends Fragment implements Parcelable{
     private static final int PICK_IMAGE = 1;
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "Home Frag";
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_TAKE_PHOTO = 1;
     ArrayList<Image> SELECTED_IMAGES_ARRAY;
@@ -51,7 +56,24 @@ public class HomeFragment extends Fragment implements Parcelable{
         // Inflate the layout for this fragment
         final View rootView =  inflater.inflate(R.layout.fragment_home2, container, false);
         DatabaseController databasecontroller =  new DatabaseController(getContext());
-        Challenge currentChallenge = databasecontroller.getChallenge("challenge01");
+        Challenge currentChallenge = databasecontroller.getChallenge();
+        String dateTriggered = currentChallenge.getDateTriggered();
+        if (dateTriggered == "not set") {
+            databasecontroller.setChallenge(currentChallenge.getId());
+        } else {
+            String dateCompleteBy = currentChallenge.getCompletionDate();
+            try {
+                if (new SimpleDateFormat("dd-MM-yyyy").parse(dateCompleteBy).before(new Date())) {
+                    // completed. mark as completed and set new challenge
+                    databasecontroller.completeChallenge(currentChallenge.getId());
+                    databasecontroller.getChallenge();
+                    databasecontroller.setChallenge(currentChallenge.getId());
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
         TextView text = (TextView) rootView.findViewById(R.id.challengeText);
         text.setText(currentChallenge.getName());
         ImageButton gallery = (ImageButton) rootView.findViewById(R.id.imageButton_gallery);

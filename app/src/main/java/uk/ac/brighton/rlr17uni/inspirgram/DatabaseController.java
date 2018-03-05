@@ -14,8 +14,11 @@ import android.widget.TextView;
 import java.io.File;
 import java.net.URI;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+
+import static java.lang.Boolean.FALSE;
 
 /**
  * Created by rushlet on 27/11/2017.
@@ -23,7 +26,7 @@ import java.util.Locale;
 
 public class DatabaseController extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "test.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static final String TAG = "databasecontroller";
     private Context context;
 
@@ -31,6 +34,7 @@ public class DatabaseController extends SQLiteOpenHelper {
     private static final String COLUMN_ID = "challenge_id";
     private static final String COLUMN_NAME = "challenge_name";
     private static final String COLUMN_TRIGGERED = "triggered";
+    private static final String COLUMN_TRIGGERED_DATE = "triggered_date";
     private static final String COLUMN_COMPLETE = "complete";
     private static final String COLUMN_COMPLETE_DATE = "completion_date";
     private static final String COLUMN_MAIN_CHALLENGE = "main_challenge";
@@ -42,6 +46,7 @@ public class DatabaseController extends SQLiteOpenHelper {
             + COLUMN_ID + " text, "
             + COLUMN_NAME + " text, "
             + COLUMN_TRIGGERED + " boolean, "
+            + COLUMN_TRIGGERED_DATE + " date, "
             + COLUMN_COMPLETE + " boolean, "
             + COLUMN_COMPLETE_DATE + " date, "
             + COLUMN_MAIN_CHALLENGE + " boolean, "
@@ -111,16 +116,51 @@ public class DatabaseController extends SQLiteOpenHelper {
         return db.insert(TABLE_CHALLENGES, null, values);
     }
 
-    public Challenge getChallenge(String id) {
+    public Challenge getChallenge() {
         SQLiteDatabase db = this.getReadableDatabase();
-        String[] columns = {COLUMN_ID, COLUMN_NAME, COLUMN_MAIN_CHALLENGE, COLUMN_COMPLETE, COLUMN_TRIGGERED};
-        String whereClause = COLUMN_ID + "=?";
-        String[] whereArgs = {id};
-        Cursor cursor = db.query(TABLE_CHALLENGES, columns, whereClause, whereArgs, null, null, null, null);
+        String selectQuery = "SELECT  * FROM " + TABLE_CHALLENGES + " WHERE "
+                + COLUMN_COMPLETE + " = " + 0;
+        Cursor cursor = db.rawQuery(selectQuery, null);
         cursor.moveToFirst();
-        Challenge challenge = new Challenge(cursor.getString(0), cursor.getString(1));
+        Challenge challenge = new Challenge(cursor.getString(0), cursor.getString(1), cursor.getString(3), cursor.getString(5));
         cursor.close();
         return challenge;
+    }
+
+    public Challenge setChallenge(String id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // today's date
+        Date today = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+        String formattedDate = df.format(today);
+
+        // complete by date
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        cal.add(Calendar.DATE, 6);
+        String completeBy = df.format(cal.getTime());
+
+        // update db
+        String selectQuery = "UPDATE " + TABLE_CHALLENGES +
+                " SET " + COLUMN_TRIGGERED + " = " + 1 + ", " +
+                    COLUMN_TRIGGERED_DATE + " = '" + formattedDate + "', " +
+                    COLUMN_COMPLETE_DATE + " = '" + completeBy + "'" +
+                " WHERE " + COLUMN_ID + " = '" + id + "'";
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        Challenge challenge = new Challenge(cursor.getString(0), cursor.getString(1), cursor.getString(3), cursor.getString(5));
+        cursor.close();
+        return challenge;
+    }
+
+    public void completeChallenge(String id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String selectQuery = "update " + TABLE_CHALLENGES +
+                " SET " + COLUMN_COMPLETE + " = " + 1 +
+                " WHERE " + COLUMN_ID + " = " + id;
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        cursor.close();
+        cursor.close();
     }
 
     public long uploadPhotos(int position, Uri imgPath, Boolean favourite) {
