@@ -44,4 +44,12 @@ public class Challenge {
         }
         return completionDate;
     }
+
+    public void setDateTriggered(String date) {
+        dateTriggered = date;
+    }
+
+    public void setDateForCompletion(String date) {
+        completionDate = date;
+    }
 }

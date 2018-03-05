@@ -132,7 +132,7 @@ public class DatabaseController extends SQLiteOpenHelper {
         return cursor;
     }
 
-    public Challenge setChallenge(String id) {
+    public Challenge setChallenge(String id, Challenge currentChallenge) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         // today's date
@@ -153,18 +153,19 @@ public class DatabaseController extends SQLiteOpenHelper {
                     COLUMN_COMPLETE_DATE + " = '" + completeBy + "'" +
                 " WHERE " + COLUMN_ID + " = '" + id + "'";
         Cursor cursor = db.rawQuery(selectQuery, null);
-        Challenge challenge = new Challenge(cursor.getString(0), cursor.getString(1), cursor.getString(3), cursor.getString(5), cursor.getInt(6));
+//        Challenge challenge = new Challenge(cursor.getString(0), cursor.getString(1), cursor.getString(3), cursor.getString(5), cursor.getInt(6));
+        currentChallenge.setDateForCompletion(cursor.getString(6));
+        currentChallenge.setDateTriggered(cursor.getString(5));
         cursor.close();
-        return challenge;
+        return currentChallenge;
     }
 
     public void completeChallenge(String id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String selectQuery = "UPDATE " + TABLE_CHALLENGES +
+        String query = "UPDATE " + TABLE_CHALLENGES +
                 " SET " + COLUMN_COMPLETE + " = " + 1 +
                 " WHERE " + COLUMN_ID + " = '" + id + "'";
-        Cursor cursor = db.rawQuery(selectQuery, null);
-        cursor.close();
+        db.execSQL(query);
     }
 
     public long uploadPhotos(int position, Uri imgPath, Boolean favourite) {

@@ -58,7 +58,7 @@ public class HomeFragment extends Fragment implements Parcelable{
         String dateTriggered = currentChallenge.getDateTriggered();
 
         if (dateTriggered == "not set") {
-            databasecontroller.setChallenge(currentChallenge.getId());
+            databasecontroller.setChallenge(currentChallenge.getId(), currentChallenge);
         } else {
             String dateCompleteBy = currentChallenge.getCompletionDate();
             try {
@@ -66,7 +66,7 @@ public class HomeFragment extends Fragment implements Parcelable{
                     // completed. mark as completed and set new challenge
                     databasecontroller.completeChallenge(currentChallenge.getId());
                     databasecontroller.getChallenge();
-                    databasecontroller.setChallenge(currentChallenge.getId());
+                    databasecontroller.setChallenge(currentChallenge.getId(), currentChallenge);
                 }
             } catch (ParseException e) {
                 e.printStackTrace();
