@@ -13,12 +13,14 @@ public class Challenge {
     public static String name;
     public static String dateTriggered;
     public static String completionDate;
+    public static int completed;
 
-    public Challenge(String id, String name, String date, String completedBy) {
+    public Challenge(String id, String name, String date, String completedBy, int completed) {
         this.id = id;
         this.name = name;
         this.dateTriggered = date;
         this.completionDate = completedBy;
+        this.completed = completed;
     }
 
     public String getId() {

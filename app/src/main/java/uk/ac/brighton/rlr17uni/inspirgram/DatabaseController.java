@@ -26,7 +26,7 @@ import static java.lang.Boolean.FALSE;
 
 public class DatabaseController extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "test.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 4;
     private static final String TAG = "databasecontroller";
     private Context context;
 
@@ -76,13 +76,7 @@ public class DatabaseController extends SQLiteOpenHelper {
     public DatabaseController(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.context = context;
-        SQLiteDatabase db = this.getWritableDatabase();
         checkDatabase(context, DATABASE_NAME);
-        createChallenge("challenge01", "SHADOW");
-        createChallenge("challenge02", "SPOOKY");
-        createChallenge("challenge03", "SHIMMER");
-        createChallenge("challenge04", "SILENCE");
-        createChallenge("challenge05", "TRANQUIL");
     }
 
     @Override
@@ -91,6 +85,20 @@ public class DatabaseController extends SQLiteOpenHelper {
         Log.i(TAG, "db on create called");
         db.execSQL(DATABASE_CREATE_CHALLENGE_TABLE);
         db.execSQL(DATABASE_CREATE_PHOTO_TABLE);
+        createChallenge("challenge01", "SHADOW", db);
+        createChallenge("challenge02", "SPOOKY", db);
+        createChallenge("challenge03", "SHIMMER", db);
+        createChallenge("challenge04", "SILENCE", db);
+        createChallenge("challenge05", "TRANQUIL", db);
+    }
+
+    public void createChallenge(String id, String name, SQLiteDatabase db) {
+        String query =
+                "INSERT INTO " + TABLE_CHALLENGES +
+                        " (" + COLUMN_ID + ", " + COLUMN_NAME + ", "
+                        + COLUMN_TRIGGERED + ", " + COLUMN_COMPLETE
+                        + ") VALUES ( '" + id + "', '" + name + "', " + 0 + ", " + 0 +")";
+        db.execSQL(query);
     }
 
     @Override
@@ -105,26 +113,23 @@ public class DatabaseController extends SQLiteOpenHelper {
         return dbFile.exists();
     }
 
-    public long createChallenge(String id, String name) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_ID, id);
-        values.put(COLUMN_NAME, name);
-        values.put(COLUMN_TRIGGERED, false);
-        values.put(COLUMN_COMPLETE, false);
-        values.put(COLUMN_MAIN_CHALLENGE, true);
-        return db.insert(TABLE_CHALLENGES, null, values);
-    }
-
     public Challenge getChallenge() {
         SQLiteDatabase db = this.getReadableDatabase();
-        String selectQuery = "SELECT  * FROM " + TABLE_CHALLENGES + " WHERE "
-                + COLUMN_COMPLETE + " = " + 0;
+        String selectQuery = "SELECT  * FROM " + TABLE_CHALLENGES + " WHERE " + COLUMN_COMPLETE + " = " + 0;
         Cursor cursor = db.rawQuery(selectQuery, null);
         cursor.moveToFirst();
-        Challenge challenge = new Challenge(cursor.getString(0), cursor.getString(1), cursor.getString(3), cursor.getString(5));
+        checkIfComplete(cursor);
+        Challenge challenge = new Challenge(cursor.getString(0), cursor.getString(1), cursor.getString(3), cursor.getString(5), cursor.getInt(6));
         cursor.close();
         return challenge;
+    }
+
+    private Cursor checkIfComplete(Cursor cursor) {
+        if (cursor.getInt(6) == 1) {
+            cursor.moveToNext();
+            checkIfComplete(cursor);
+        }
+        return cursor;
     }
 
     public Challenge setChallenge(String id) {
@@ -148,18 +153,17 @@ public class DatabaseController extends SQLiteOpenHelper {
                     COLUMN_COMPLETE_DATE + " = '" + completeBy + "'" +
                 " WHERE " + COLUMN_ID + " = '" + id + "'";
         Cursor cursor = db.rawQuery(selectQuery, null);
-        Challenge challenge = new Challenge(cursor.getString(0), cursor.getString(1), cursor.getString(3), cursor.getString(5));
+        Challenge challenge = new Challenge(cursor.getString(0), cursor.getString(1), cursor.getString(3), cursor.getString(5), cursor.getInt(6));
         cursor.close();
         return challenge;
     }
 
     public void completeChallenge(String id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String selectQuery = "update " + TABLE_CHALLENGES +
+        String selectQuery = "UPDATE " + TABLE_CHALLENGES +
                 " SET " + COLUMN_COMPLETE + " = " + 1 +
-                " WHERE " + COLUMN_ID + " = " + id;
+                " WHERE " + COLUMN_ID + " = '" + id + "'";
         Cursor cursor = db.rawQuery(selectQuery, null);
-        cursor.close();
         cursor.close();
     }
 

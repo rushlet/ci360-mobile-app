@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +17,6 @@ import com.darsh.multipleimageselect.helpers.Constants;
 import com.darsh.multipleimageselect.models.Image;
 
 import java.text.ParseException;
-import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -58,6 +56,7 @@ public class HomeFragment extends Fragment implements Parcelable{
         DatabaseController databasecontroller =  new DatabaseController(getContext());
         Challenge currentChallenge = databasecontroller.getChallenge();
         String dateTriggered = currentChallenge.getDateTriggered();
+
         if (dateTriggered == "not set") {
             databasecontroller.setChallenge(currentChallenge.getId());
         } else {
