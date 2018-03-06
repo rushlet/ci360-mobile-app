@@ -96,7 +96,10 @@ public class Favourite extends Activity {
                         favouriteImage.setImageResource(android.R.color.transparent);
                         nextButton.setVisibility(View.GONE);
                         overallButton.setVisibility(View.VISIBLE);
-                        Toast.makeText(Favourite.this, "Favourites: " + favourites.length(), Toast.LENGTH_SHORT).show();
+                        // update text on screen
+                        TextView title = findViewById(R.id.favourite__selectText);
+                        title.setText("Choose overall favourite");
+//                        Toast.makeText(Favourite.this, "Favourites: " + favourites.length(), Toast.LENGTH_SHORT).show();
                         // repopulate current grid
                         gridview.setAdapter(new FavouriteImageAdapter(context, favourites));
                         // add new click listener
@@ -137,21 +140,21 @@ public class Favourite extends Activity {
                                         try {
                                             JSONArray entry = favourites.getJSONArray(i);
                                             databasecontroller.updateFavourite(entry, isOverallFavourite);
-                                            Toast.makeText(Favourite.this, "Overall Favourite Selected", Toast.LENGTH_SHORT).show();
-
+                                            // check there is now only 1 favourite and redirect to home page.
+                                            final JSONArray updatedFavourites =  databasecontroller.checkMultipleFavourites();
+                                            int numberOfFavourites = updatedFavourites.length();
+                                            if (numberOfFavourites == 1) {
+                                                activity.finish();
+                                            }
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
 
-                                        // check there is now only 1 favourite and redirect to home page.
+
                                     }
                                 }
                             }
                         });
-
-                        // update text on screen
-                        TextView title = findViewById(R.id.favourite__selectText);
-                        title.setText("Choose overall favourite");
                     } else {
                         Toast.makeText(Favourite.this, "Photos uploaded", Toast.LENGTH_SHORT).show();
                         activity.finish();

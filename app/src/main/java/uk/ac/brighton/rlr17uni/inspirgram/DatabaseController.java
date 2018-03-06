@@ -194,13 +194,12 @@ public class DatabaseController extends SQLiteOpenHelper {
     public JSONArray checkMultipleFavourites() {
         SQLiteDatabase db = this.getWritableDatabase();
         String id = Challenge.id;
-        ArrayList<String> Favourites = new ArrayList();
         String selectQuery = "SELECT * FROM " + TABLE_PHOTOS + " WHERE " + COLUMN_ID + " = '" + id +"' AND " + FAVOURITE + " = " + 1;
         Cursor cursor = db.rawQuery(selectQuery, null);
         cursor.moveToFirst();
         JSONArray favouritesJson = new JSONArray();
         int numberOfFavourites = cursor.getCount();
-        if (numberOfFavourites > 1) {
+        if (numberOfFavourites > 0) {
             for (int i = 0; i < numberOfFavourites; i++) {
                 String uri = cursor.getString(4);
                 String photoId = cursor.getString(0);
@@ -220,7 +219,6 @@ public class DatabaseController extends SQLiteOpenHelper {
         try {
 //            Uri imgPath =
             String imageId = favourite.getString(1);
-            String imagePath = favourite.getString(0);
             int formatFavourite = 0;
             if (isFavourite == true) {
                 formatFavourite = 1;
@@ -230,10 +228,8 @@ public class DatabaseController extends SQLiteOpenHelper {
 //        db.update(TABLE_PHOTOS, values, IMG_PATH+"="+imagePath, null);
 
             String updateQuery = "UPDATE " + TABLE_PHOTOS + " SET " + FAVOURITE + " = " + formatFavourite +
-                    " WHERE " + IMG_PATH + " = '" + imagePath + "'";
-
-            String selectQuery = "SELECT * FROM " + TABLE_PHOTOS + " WHERE " + PHOTOS_COLUMN_ID + " = '" + imageId + "'";
-            Cursor cursor = db.rawQuery(selectQuery, null);
+                    " WHERE "  + PHOTOS_COLUMN_ID + " = '" + imageId + "'";
+            Cursor cursor = db.rawQuery(updateQuery, null);
             cursor.moveToFirst();
             cursor.close();
         } catch (JSONException e) {
