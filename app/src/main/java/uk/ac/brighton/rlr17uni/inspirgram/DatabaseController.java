@@ -26,7 +26,7 @@ import static java.lang.Boolean.FALSE;
 
 public class DatabaseController extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "test.db";
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
     private static final String TAG = "databasecontroller";
     private Context context;
 
@@ -46,9 +46,9 @@ public class DatabaseController extends SQLiteOpenHelper {
             + COLUMN_ID + " text, "
             + COLUMN_NAME + " text, "
             + COLUMN_TRIGGERED + " boolean, "
-            + COLUMN_TRIGGERED_DATE + " date, "
+            + COLUMN_TRIGGERED_DATE + " text, "
             + COLUMN_COMPLETE + " boolean, "
-            + COLUMN_COMPLETE_DATE + " date, "
+            + COLUMN_COMPLETE_DATE + " text, "
             + COLUMN_MAIN_CHALLENGE + " boolean, "
             + COLUMN_BURST + " boolean, "
             + COLUMN_WEEK + " integer"
@@ -145,27 +145,24 @@ public class DatabaseController extends SQLiteOpenHelper {
         cal.setTime(new Date());
         cal.add(Calendar.DATE, 6);
         String completeBy = df.format(cal.getTime());
-
         // update db
-        String selectQuery = "UPDATE " + TABLE_CHALLENGES +
-                " SET " + COLUMN_TRIGGERED + " = " + 1 + ", " +
-                    COLUMN_TRIGGERED_DATE + " = '" + formattedDate + "', " +
-                    COLUMN_COMPLETE_DATE + " = '" + completeBy + "'" +
-                " WHERE " + COLUMN_ID + " = '" + id + "'";
-        Cursor cursor = db.rawQuery(selectQuery, null);
-//        Challenge challenge = new Challenge(cursor.getString(0), cursor.getString(1), cursor.getString(3), cursor.getString(5), cursor.getInt(6));
-        currentChallenge.setDateForCompletion(cursor.getString(6));
-        currentChallenge.setDateTriggered(cursor.getString(5));
-        cursor.close();
+        ContentValues cv = new ContentValues();
+        cv.put(COLUMN_TRIGGERED,1); //These Fields should be your String values of actual column names
+        cv.put(COLUMN_TRIGGERED_DATE, formattedDate);
+        cv.put(COLUMN_COMPLETE_DATE, completeBy);
+        db.update(TABLE_CHALLENGES, cv, "challenge_id='"+id+"'", null);
+
+        currentChallenge.setDateForCompletion(completeBy);
+        currentChallenge.setDateTriggered(formattedDate);
         return currentChallenge;
     }
 
     public void completeChallenge(String id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "UPDATE " + TABLE_CHALLENGES +
-                " SET " + COLUMN_COMPLETE + " = " + 1 +
-                " WHERE " + COLUMN_ID + " = '" + id + "'";
-        db.execSQL(query);
+        // update db
+        ContentValues cv = new ContentValues();
+        cv.put(COLUMN_COMPLETE,1); //These Fields should be your String values of actual column names
+        db.update(TABLE_CHALLENGES, cv, "challenge_id='"+id+"'", null);
     }
 
     public long uploadPhotos(int position, Uri imgPath, Boolean favourite) {
