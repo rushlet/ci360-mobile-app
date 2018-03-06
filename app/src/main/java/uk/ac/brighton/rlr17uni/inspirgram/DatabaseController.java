@@ -7,6 +7,7 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.hardware.camera2.params.StreamConfigurationMap;
+import android.media.Image;
 import android.net.Uri;
 import android.util.Log;
 import android.widget.TextView;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import java.io.File;
 import java.net.URI;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -185,9 +187,22 @@ public class DatabaseController extends SQLiteOpenHelper {
         return db.insert(TABLE_PHOTOS, null, values);
     }
 
-    public long getNumberOfPhotosUploaded() {
+    public ArrayList<String> checkMultipleFavourites() {
         SQLiteDatabase db = this.getWritableDatabase();
-        return DatabaseUtils.queryNumEntries(db, TABLE_PHOTOS);
+        String id = Challenge.id;
+        ArrayList<String> Favourites = new ArrayList();
+        String selectQuery = "SELECT * FROM " + TABLE_PHOTOS + " WHERE " + COLUMN_ID + " = '" + id +"' AND " + FAVOURITE + " = " + 1;
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        cursor.moveToFirst();
+        int numberOfFavourites = cursor.getCount();
+        if (numberOfFavourites > 1) {
+            for (int i = 0; i < numberOfFavourites; i++) {
+                String uri = cursor.getString(4);
+                Favourites.add(uri);
+                cursor.moveToNext();
+            }
+        }
+        return Favourites;
     }
 
 //    public long getFavouritePhotos () {

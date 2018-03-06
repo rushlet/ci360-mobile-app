@@ -1,8 +1,11 @@
 package uk.ac.brighton.rlr17uni.inspirgram;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -24,6 +27,8 @@ public class Favourite extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favourite);
+
+        final Activity activity = this;
 
         final String TAG = "isFavourite";
 
@@ -60,12 +65,8 @@ public class Favourite extends Activity {
                             Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    // upload images to db
-                    Toast.makeText(Favourite.this, "Favourite: " + favourite,
-                            Toast.LENGTH_SHORT).show();
+                    // upload images to db - new runnable/thread?
                     boolean isFavourite;
-
-                    // new runnable/thread
                     for (int i = 0; i < images.size(); i++) {
                         Uri uri = Uri.fromFile(new File(images.get(i).path));
                         if (i == favourite) {
@@ -75,8 +76,19 @@ public class Favourite extends Activity {
                         }
                         Log.i(TAG, "" + isFavourite);
                         databasecontroller.uploadPhotos(i, uri, isFavourite);
+                        ArrayList favourites =  databasecontroller.checkMultipleFavourites();
+                        if (favourites.size() > 0) {
+                            favourites.size();
+                            Toast.makeText(Favourite.this, "Favourites: " + favourites.size(), Toast.LENGTH_SHORT).show();
+                            // open new activity
+//                            for (int k = 0; k < favourites.size(); k++) {
+//                                String url = favourites.get(k).toString();
+//                                Uri path = Uri.fromFile(new File(url));
+                            } else {
+                            Toast.makeText(Favourite.this, "Photos uploaded", Toast.LENGTH_SHORT).show();
+                            activity.finish();
+                        }
                     }
-                    databasecontroller.getNumberOfPhotosUploaded();
                 }
             }
         });
