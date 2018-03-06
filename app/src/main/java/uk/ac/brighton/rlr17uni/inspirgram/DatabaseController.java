@@ -147,7 +147,7 @@ public class DatabaseController extends SQLiteOpenHelper {
         String completeBy = df.format(cal.getTime());
         // update db
         ContentValues cv = new ContentValues();
-        cv.put(COLUMN_TRIGGERED,1); //These Fields should be your String values of actual column names
+        cv.put(COLUMN_TRIGGERED,1);
         cv.put(COLUMN_TRIGGERED_DATE, formattedDate);
         cv.put(COLUMN_COMPLETE_DATE, completeBy);
         db.update(TABLE_CHALLENGES, cv, "challenge_id='"+id+"'", null);
@@ -161,7 +161,7 @@ public class DatabaseController extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         // update db
         ContentValues cv = new ContentValues();
-        cv.put(COLUMN_COMPLETE,1); //These Fields should be your String values of actual column names
+        cv.put(COLUMN_COMPLETE,1);
         db.update(TABLE_CHALLENGES, cv, "challenge_id='"+id+"'", null);
     }
 
