@@ -59,7 +59,7 @@ public class InspirationFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootview =  inflater.inflate(R.layout.fragment_inspiration, container, false);
-        String tag = "shadow";
+        String tag = Challenge.name;
         String baseURL = "https://api.flickr.com/services/rest/?method=flickr.photos.search";
         String key =  "60dd9c77c36b4684185bb29b88d99c4c";
         String url = baseURL + "&api_key=" + key +"&tags=" + tag +"&per_page=10&format=json&nojsoncallback=1";
@@ -88,7 +88,7 @@ public class InspirationFragment extends Fragment {
                             }
                             final GridView gridview = getView().findViewById(R.id.inspiration__gridview);
                             gridview.setAdapter(new FlickrImageAdapter(getContext(), photoURLs));
-                            mTextView.setText("Shadow");
+                            mTextView.setText(Challenge.name);
                         } catch (JSONException e) {
                             e.printStackTrace();
                             mTextView.setText("Response is: "+ response);
