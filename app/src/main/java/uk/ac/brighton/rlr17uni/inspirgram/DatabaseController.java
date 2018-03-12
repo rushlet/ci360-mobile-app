@@ -224,4 +224,18 @@ public class DatabaseController extends SQLiteOpenHelper {
         }
 
     }
+
+    public void getFavourites() throws JSONException {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String getFavouritesQuery = "SELECT * FROM " + TABLE_PHOTOS + " WHERE " + FAVOURITE + " = 1";
+        Cursor cursor = db.rawQuery(getFavouritesQuery, null);
+        cursor.moveToFirst();
+        for (int i = 0; i < cursor.getCount(); i++) {
+            Challenge.addToFavourites(cursor);
+            if (i++ < cursor.getCount()) {
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+    }
 }

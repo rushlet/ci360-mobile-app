@@ -8,6 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -18,6 +21,7 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class TimelineFragment extends Fragment {
+    private JSONArray allFavourites = new JSONArray();
 
     public TimelineFragment() {
         // Required empty public constructor
@@ -39,11 +43,18 @@ public class TimelineFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        DatabaseController databasecontroller = new DatabaseController(getContext());
+        try {
+            databasecontroller.getFavourites();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        allFavourites = Challenge.allFavourites();
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_timeline, container, false);
     }
