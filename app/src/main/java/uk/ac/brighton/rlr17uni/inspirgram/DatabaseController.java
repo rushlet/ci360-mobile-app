@@ -217,7 +217,6 @@ public class DatabaseController extends SQLiteOpenHelper {
     public void updateFavourite(JSONArray favourite, Boolean isFavourite) {
         SQLiteDatabase db = this.getWritableDatabase();
         try {
-//            Uri imgPath =
             String imageId = favourite.getString(1);
             int formatFavourite = 0;
             if (isFavourite == true) {
@@ -225,7 +224,7 @@ public class DatabaseController extends SQLiteOpenHelper {
             }
 //        ContentValues values = new ContentValues();
 //        values.put(FAVOURITE, formatFavourite);
-//        db.update(TABLE_PHOTOS, values, IMG_PATH+"="+imagePath, null);
+//        db.update(TABLE_PHOTOS, values, PHOTOS_COLUMN_ID+"="+imageId, null);
 
             String updateQuery = "UPDATE " + TABLE_PHOTOS + " SET " + FAVOURITE + " = " + formatFavourite +
                     " WHERE "  + PHOTOS_COLUMN_ID + " = '" + imageId + "'";
@@ -237,16 +236,4 @@ public class DatabaseController extends SQLiteOpenHelper {
         }
 
     }
-
-//    public long getFavouritePhotos () {
-//
-//    }
-
-    // set next challenge - get first entry (or randomly select?) where complete is false or empty
-
-    // mark challenge as complete
-
-    // get burst challenge
-
-    //
 }
