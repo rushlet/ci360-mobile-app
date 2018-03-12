@@ -7,6 +7,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -55,8 +58,10 @@ public class TimelineFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         allFavourites = Challenge.allFavourites();
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_timeline, container, false);
+        final View rootview =  inflater.inflate(R.layout.fragment_timeline, container, false);
+        ListView listview = rootview.findViewById(R.id.timeline__listview);
+        listview.setAdapter(new TimelineAdapter(getContext(), allFavourites));
+        return rootview;
     }
 
     @Override
