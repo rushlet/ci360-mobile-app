@@ -91,7 +91,7 @@ public class Favourite extends Activity {
 
                     //select overall favourite
                     final JSONArray favourites =  databasecontroller.checkMultipleFavourites();
-                    if (favourites.length() > 0) {
+                    if (favourites.length() > 1) {
                         // clear current favourite
                         favouriteImage.setImageResource(android.R.color.transparent);
                         nextButton.setVisibility(View.GONE);
@@ -99,7 +99,6 @@ public class Favourite extends Activity {
                         // update text on screen
                         TextView title = findViewById(R.id.favourite__selectText);
                         title.setText("Choose overall favourite");
-//                        Toast.makeText(Favourite.this, "Favourites: " + favourites.length(), Toast.LENGTH_SHORT).show();
                         // repopulate current grid
                         gridview.setAdapter(new FavouriteImageAdapter(context, favourites));
                         // add new click listener
@@ -143,6 +142,7 @@ public class Favourite extends Activity {
                                             // check there is now only 1 favourite and redirect to home page.
                                             final JSONArray updatedFavourites =  databasecontroller.checkMultipleFavourites();
                                             int numberOfFavourites = updatedFavourites.length();
+                                            Toast.makeText(Favourite.this, "Photos uploaded", Toast.LENGTH_SHORT).show();
                                             if (numberOfFavourites == 1) {
                                                 activity.finish();
                                             }
