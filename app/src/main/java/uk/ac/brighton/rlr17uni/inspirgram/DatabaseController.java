@@ -6,19 +6,16 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.hardware.camera2.params.StreamConfigurationMap;
 import android.net.Uri;
 import android.util.Log;
-import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import java.io.File;
-import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-
-import static java.lang.Boolean.FALSE;
 
 /**
  * Created by rushlet on 27/11/2017.
@@ -26,7 +23,7 @@ import static java.lang.Boolean.FALSE;
 
 public class DatabaseController extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "test.db";
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 6;
     private static final String TAG = "databasecontroller";
     private Context context;
 
@@ -59,7 +56,7 @@ public class DatabaseController extends SQLiteOpenHelper {
     private static final String PHOTOS_COLUMN_ID = "photo_id";
     private static final String PHOTOS_COLUMN_NAME = "challenge_name";
     private static final String UPLOAD_DATE = "upload_date";
-    private static final String IMG_PATH = "text";
+    private static final String IMG_PATH = "image_path";
     private static final String FAVOURITE = "favourite";
 
     private static final String DATABASE_CREATE_PHOTO_TABLE = "CREATE TABLE " + TABLE_PHOTOS
@@ -185,20 +182,46 @@ public class DatabaseController extends SQLiteOpenHelper {
         return db.insert(TABLE_PHOTOS, null, values);
     }
 
-    public long getNumberOfPhotosUploaded() {
+    public JSONArray checkMultipleFavourites() {
         SQLiteDatabase db = this.getWritableDatabase();
-        return DatabaseUtils.queryNumEntries(db, TABLE_PHOTOS);
+        String id = Challenge.id;
+        String selectQuery = "SELECT * FROM " + TABLE_PHOTOS + " WHERE " + COLUMN_ID + " = '" + id +"' AND " + FAVOURITE + " = " + 1;
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        cursor.moveToFirst();
+        JSONArray favouritesJson = new JSONArray();
+        int numberOfFavourites = cursor.getCount();
+        if (numberOfFavourites > 0) {
+            for (int i = 0; i < numberOfFavourites; i++) {
+                String uri = cursor.getString(4);
+                String photoId = cursor.getString(0);
+                JSONArray favourite = new JSONArray();
+                favourite.put(uri);
+                favourite.put(photoId);
+                favouritesJson.put(favourite);
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+        return favouritesJson;
     }
 
-//    public long getFavouritePhotos () {
-//
-//    }
+    public void updateFavourite(JSONArray favourite, Boolean isFavourite) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            String imageId = favourite.getString(1);
+            int formatFavourite = 0;
+            if (isFavourite == true) {
+                formatFavourite = 1;
+            }
 
-    // set next challenge - get first entry (or randomly select?) where complete is false or empty
+            String updateQuery = "UPDATE " + TABLE_PHOTOS + " SET " + FAVOURITE + " = " + formatFavourite +
+                    " WHERE "  + PHOTOS_COLUMN_ID + " = '" + imageId + "'";
+            Cursor cursor = db.rawQuery(updateQuery, null);
+            cursor.moveToFirst();
+            cursor.close();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
-    // mark challenge as complete
-
-    // get burst challenge
-
-    //
+    }
 }
