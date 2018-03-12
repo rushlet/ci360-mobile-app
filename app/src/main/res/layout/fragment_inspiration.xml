@@ -20,7 +20,7 @@
             android:layout_marginRight="8dp"
             android:layout_marginTop="8dp"
             android:ems="10"
-            android:text="@string/favourite_title"
+            android:text="@string/inspiration_title"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             android:textSize="24sp"
