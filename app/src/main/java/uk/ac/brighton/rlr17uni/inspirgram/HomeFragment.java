@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +31,7 @@ public class HomeFragment extends Fragment implements Parcelable{
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_TAKE_PHOTO = 1;
     ArrayList<Image> SELECTED_IMAGES_ARRAY;
+    private FragmentManager supportFragmentManager;
 
 
     public HomeFragment() {
@@ -83,6 +86,14 @@ public class HomeFragment extends Fragment implements Parcelable{
                 openGallery(rootView);
             }
         });
+        ImageButton inspiration = (ImageButton) rootView.findViewById(R.id.imageButton_inspiration);
+        inspiration.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view) {
+                openInspiration();
+            }
+        });
         return rootView;
     }
 
@@ -101,6 +112,13 @@ public class HomeFragment extends Fragment implements Parcelable{
         Intent intent = new Intent(getActivity(), AlbumSelectActivity.class);
         intent.putExtra(Constants.INTENT_EXTRA_LIMIT, 10);
         startActivityForResult(intent, Constants.REQUEST_CODE);
+    }
+
+    public void openInspiration() {
+        Fragment fragment = new InspirationFragment();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.fragment_placeholder, fragment, "home_fragment");
+        ft.commit();
     }
 
     @Override
