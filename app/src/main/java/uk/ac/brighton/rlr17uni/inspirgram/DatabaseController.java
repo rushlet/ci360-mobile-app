@@ -6,25 +6,16 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.hardware.camera2.params.StreamConfigurationMap;
-import android.media.Image;
 import android.net.Uri;
 import android.util.Log;
-import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.File;
-import java.net.URI;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-
-import static java.lang.Boolean.FALSE;
 
 /**
  * Created by rushlet on 27/11/2017.
@@ -222,9 +213,6 @@ public class DatabaseController extends SQLiteOpenHelper {
             if (isFavourite == true) {
                 formatFavourite = 1;
             }
-//        ContentValues values = new ContentValues();
-//        values.put(FAVOURITE, formatFavourite);
-//        db.update(TABLE_PHOTOS, values, PHOTOS_COLUMN_ID+"="+imageId, null);
 
             String updateQuery = "UPDATE " + TABLE_PHOTOS + " SET " + FAVOURITE + " = " + formatFavourite +
                     " WHERE "  + PHOTOS_COLUMN_ID + " = '" + imageId + "'";
