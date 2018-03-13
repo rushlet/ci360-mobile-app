@@ -25,6 +25,7 @@ import org.json.JSONException;
  */
 public class TimelineFragment extends Fragment {
     private JSONArray allFavourites = new JSONArray();
+    TimelineAdapter timelineAdapter;
 
     public TimelineFragment() {
         // Required empty public constructor
@@ -47,20 +48,34 @@ public class TimelineFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DatabaseController databasecontroller = new DatabaseController(getContext());
+
         try {
             databasecontroller.getFavourites();
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        allFavourites = Challenge.allFavourites();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        allFavourites = Challenge.allFavourites();
+
+        try {
+            timelineAdapter = new TimelineAdapter(getActivity(), allFavourites);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         final View rootview =  inflater.inflate(R.layout.fragment_timeline, container, false);
         ListView listview = rootview.findViewById(R.id.timeline__listview);
-        listview.setAdapter(new TimelineAdapter(getContext(), allFavourites));
+        try {
+            timelineAdapter = new TimelineAdapter(getActivity(), allFavourites);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        listview.setAdapter(timelineAdapter);
         return rootview;
     }
 

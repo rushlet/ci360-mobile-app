@@ -61,6 +61,10 @@ public class Challenge {
         completionDate = date;
     }
 
+    public static void clearFavourites() {
+        favourites = new JSONArray();
+    }
+
     public static void addToFavourites(Cursor cursor) throws JSONException {
         JSONObject favourite = new JSONObject();
         favourite.put("photoID", cursor.getString(0));
