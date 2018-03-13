@@ -7,6 +7,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 
 /**
@@ -18,6 +24,8 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class TimelineFragment extends Fragment {
+    private JSONArray allFavourites = new JSONArray();
+    TimelineAdapter timelineAdapter;
 
     public TimelineFragment() {
         // Required empty public constructor
@@ -39,13 +47,36 @@ public class TimelineFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        DatabaseController databasecontroller = new DatabaseController(getContext());
+
+        try {
+            databasecontroller.getFavourites();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        allFavourites = Challenge.allFavourites();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_timeline, container, false);
+
+        try {
+            timelineAdapter = new TimelineAdapter(getActivity(), allFavourites);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        final View rootview =  inflater.inflate(R.layout.fragment_timeline, container, false);
+        ListView listview = rootview.findViewById(R.id.timeline__listview);
+        try {
+            timelineAdapter = new TimelineAdapter(getActivity(), allFavourites);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        listview.setAdapter(timelineAdapter);
+        return rootview;
     }
 
     @Override

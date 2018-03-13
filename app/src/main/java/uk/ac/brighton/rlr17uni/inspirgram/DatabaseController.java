@@ -23,7 +23,7 @@ import java.util.Locale;
 
 public class DatabaseController extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "test.db";
-    private static final int DATABASE_VERSION = 6;
+    private static final int DATABASE_VERSION = 7;
     private static final String TAG = "databasecontroller";
     private Context context;
 
@@ -40,7 +40,7 @@ public class DatabaseController extends SQLiteOpenHelper {
 
     private static final String DATABASE_CREATE_CHALLENGE_TABLE = "CREATE TABLE " + TABLE_CHALLENGES
             + " ("
-            + COLUMN_ID + " text, "
+            + COLUMN_ID + " text primary key, "
             + COLUMN_NAME + " text, "
             + COLUMN_TRIGGERED + " boolean, "
             + COLUMN_TRIGGERED_DATE + " text, "
@@ -61,7 +61,7 @@ public class DatabaseController extends SQLiteOpenHelper {
 
     private static final String DATABASE_CREATE_PHOTO_TABLE = "CREATE TABLE " + TABLE_PHOTOS
             + " ("
-            + PHOTOS_COLUMN_ID + " text, "
+            + PHOTOS_COLUMN_ID + " text primary key, "
             + PHOTOS_COLUMN_NAME + " text, "
             + COLUMN_ID + " text, "
             + UPLOAD_DATE + " date, "
@@ -82,11 +82,18 @@ public class DatabaseController extends SQLiteOpenHelper {
         Log.i(TAG, "db on create called");
         db.execSQL(DATABASE_CREATE_CHALLENGE_TABLE);
         db.execSQL(DATABASE_CREATE_PHOTO_TABLE);
-        createChallenge("challenge01", "SHADOW", db);
-        createChallenge("challenge02", "SPOOKY", db);
-        createChallenge("challenge03", "SHIMMER", db);
-        createChallenge("challenge04", "SILENCE", db);
-        createChallenge("challenge05", "TRANQUIL", db);
+        String countQuery = "SELECT count(*) FROM " + TABLE_CHALLENGES;
+        Cursor cursor = db.rawQuery(countQuery, null);
+        cursor.moveToFirst();
+        int count = cursor.getInt(0);
+        if(count == 0) {
+            createChallenge("challenge01", "SHADOW", db);
+            createChallenge("challenge02", "SPOOKY", db);
+            createChallenge("challenge03", "SHIMMER", db);
+            createChallenge("challenge04", "SILENCE", db);
+            createChallenge("challenge05", "TRANQUIL", db);
+        }
+        cursor.close();
     }
 
     public void createChallenge(String id, String name, SQLiteDatabase db) {
@@ -168,13 +175,12 @@ public class DatabaseController extends SQLiteOpenHelper {
         String id = "photo"+(count+1);
         String challengeId = Challenge.id;
         String challenge = Challenge.name;
-        String name = challenge + position;
-        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        String date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
         String imagePath = imgPath.toString();
 
         ContentValues values = new ContentValues();
         values.put(PHOTOS_COLUMN_ID, id);
-        values.put(PHOTOS_COLUMN_NAME, name);
+        values.put(PHOTOS_COLUMN_NAME, challenge);
         values.put(COLUMN_ID, challengeId);
         values.put(UPLOAD_DATE, date);
         values.put(IMG_PATH, imagePath);
@@ -223,5 +229,19 @@ public class DatabaseController extends SQLiteOpenHelper {
             e.printStackTrace();
         }
 
+    }
+
+    public void getFavourites() throws JSONException {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String getFavouritesQuery = "SELECT * FROM " + TABLE_PHOTOS + " WHERE " + FAVOURITE + " = 1";
+        Cursor cursor = db.rawQuery(getFavouritesQuery, null);
+        cursor.moveToFirst();
+        Challenge.clearFavourites();
+        int numberOfFavourites = cursor.getCount();
+        for (int i = 0; i < numberOfFavourites; i++) {
+            Challenge.addToFavourites(cursor);
+            cursor.moveToNext();
+        }
+        cursor.close();
     }
 }
