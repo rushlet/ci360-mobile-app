@@ -1,13 +1,18 @@
 package uk.ac.brighton.rlr17uni.inspirgram;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.NotificationCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +37,8 @@ public class HomeFragment extends Fragment implements Parcelable{
     static final int REQUEST_TAKE_PHOTO = 1;
     ArrayList<Image> SELECTED_IMAGES_ARRAY;
     private FragmentManager supportFragmentManager;
+    private Context mContext = this.getContext();
+
 
 
     public HomeFragment() {
@@ -94,12 +101,22 @@ public class HomeFragment extends Fragment implements Parcelable{
                 openInspiration();
             }
         });
+
+        ImageButton camera = (ImageButton) rootView.findViewById(R.id.imageButton_camera);
+        camera.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view) {
+                sendNotification();
+            }
+        });
         return rootView;
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        this.mContext = context;
     }
 
     @Override
@@ -133,6 +150,27 @@ public class HomeFragment extends Fragment implements Parcelable{
             openFavourites.putExtras(b);
             startActivity(openFavourites);
         }
+    }
+
+    public void sendNotification() {
+        Intent intent = new Intent(mContext, HomeFragment.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        NotificationCompat.Builder b = new NotificationCompat.Builder(mContext);
+
+        b.setAutoCancel(true)
+                .setDefaults(Notification.DEFAULT_ALL)
+                .setWhen(System.currentTimeMillis())
+                .setSmallIcon(R.drawable.home_inspiration)
+                .setContentTitle("Default notification")
+                .setContentText("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
+                .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_SOUND)
+                .setContentIntent(contentIntent)
+                .setContentInfo("Info");
+
+
+        NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(1, b.build());
     }
 
     // created using parcelable generator
