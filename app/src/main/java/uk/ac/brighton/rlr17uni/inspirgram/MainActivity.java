@@ -1,6 +1,9 @@
 package uk.ac.brighton.rlr17uni.inspirgram;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -14,6 +17,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.darsh.multipleimageselect.activities.AlbumSelectActivity;
+import com.darsh.multipleimageselect.helpers.Constants;
+import com.darsh.multipleimageselect.models.Image;
+
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
     private ListView mDrawerList;
@@ -21,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
     private String mActivityTitle;
+    ArrayList<Image> SELECTED_IMAGES_ARRAY;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,31 +54,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
 //    http://blog.teamtreehouse.com/add-navigation-drawer-android
-
     private void addDrawerItems() {
-        String[] pagesArray = { "Home", "Inspire Me", "Timeline" };
+        String[] pagesArray = { "Home", "Upload", "Inspire Me", "Timeline" };
         mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, pagesArray);
         mDrawerList.setAdapter(mAdapter);
 
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(MainActivity.this, "id: "+id + " position: " + position, Toast.LENGTH_SHORT).show();
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 switch(position) {
                     case 0:
-                        Fragment fragment = new HomeFragment();
-                        ft.replace(R.id.fragment_placeholder, fragment);
+                        Fragment homeFragment = new HomeFragment();
+                        ft.replace(R.id.fragment_placeholder, homeFragment);
                         ft.commit();
                         mActivityTitle = getResources().getString(R.string.app_name);
                         break;
                     case 1:
+                        openGallery();
+                        break;
+                    case 2:
                         Fragment inspirationFragment = new InspirationFragment();
                         ft.replace(R.id.fragment_placeholder, inspirationFragment);
                         ft.commit();
                         mActivityTitle = getResources().getString(R.string.menu_inspire);
                         break;
-                    case 2:
+                    case 3:
                         Fragment timelineFragment = new TimelineFragment();
                         ft.replace(R.id.fragment_placeholder, timelineFragment);
                         ft.commit();
@@ -117,6 +129,27 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    //    https://github.com/darsh2/MultipleImageSelect
+    public void openGallery() {
+        Intent intent = new Intent(getBaseContext(), AlbumSelectActivity.class);
+        intent.putExtra(Constants.INTENT_EXTRA_LIMIT, 10);
+        startActivityForResult(intent, Constants.REQUEST_CODE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == Constants.REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+            //The array list has the image paths of the selected images
+            ArrayList<Image> images = data.getParcelableArrayListExtra(Constants.INTENT_EXTRA_IMAGES);
+            Intent openFavourites = new Intent(getBaseContext(), Favourite.class);
+            Bundle b=new Bundle();
+            SELECTED_IMAGES_ARRAY = images;
+            b.putParcelableArrayList("image_uris", SELECTED_IMAGES_ARRAY);
+            openFavourites.putExtras(b);
+            startActivity(openFavourites);
+        }
     }
 }
 

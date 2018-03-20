@@ -83,7 +83,7 @@ public class HomeFragment extends Fragment implements Parcelable{
         {
             @Override
             public void onClick(View view) {
-                openGallery(rootView);
+                openGallery();
             }
         });
         ImageButton inspiration = (ImageButton) rootView.findViewById(R.id.imageButton_inspiration);
@@ -107,18 +107,18 @@ public class HomeFragment extends Fragment implements Parcelable{
         super.onDetach();
     }
 
-    //    https://github.com/darsh2/MultipleImageSelect
-    public void openGallery(View view) {
-        Intent intent = new Intent(getActivity(), AlbumSelectActivity.class);
-        intent.putExtra(Constants.INTENT_EXTRA_LIMIT, 10);
-        startActivityForResult(intent, Constants.REQUEST_CODE);
-    }
-
     public void openInspiration() {
         Fragment fragment = new InspirationFragment();
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_placeholder, fragment, "home_fragment");
         ft.commit();
+    }
+
+    //    https://github.com/darsh2/MultipleImageSelect
+    public void openGallery() {
+        Intent intent = new Intent(getActivity(), AlbumSelectActivity.class);
+        intent.putExtra(Constants.INTENT_EXTRA_LIMIT, 10);
+        startActivityForResult(intent, Constants.REQUEST_CODE);
     }
 
     @Override
