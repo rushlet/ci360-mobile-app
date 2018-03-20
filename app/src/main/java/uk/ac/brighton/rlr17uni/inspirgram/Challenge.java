@@ -1,15 +1,10 @@
 package uk.ac.brighton.rlr17uni.inspirgram;
 
-import android.app.Activity;
 import android.database.Cursor;
-import android.os.Bundle;
-import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import static java.security.AccessController.getContext;
 
 /**
  * Created by rushlet on 27/11/2017.
