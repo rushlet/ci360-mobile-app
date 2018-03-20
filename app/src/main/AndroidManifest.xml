@@ -51,7 +51,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".Favourite" />
-        <activity android:name=".NotificationActivity" />
 
         <receiver android:name=".AlarmReceiver">
             <intent-filter>

@@ -68,7 +68,8 @@ public class MainActivity extends AppCompatActivity {
 
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.SECOND, 15);
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), broadcast);
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(),
+                60000, broadcast);
     }
 
 //    http://blog.teamtreehouse.com/add-navigation-drawer-android

@@ -15,7 +15,7 @@ import android.support.v4.app.TaskStackBuilder;
  */
 
 public class NotificationScheduler {
-    private static final int DAILY_REMINDER_REQUEST_CODE = 1;
+    private static final int NEW_CHALLENGE_REMINDER_REQUEST_CODE = 56;
 
     public static void showNotification(Context context, Class<?> cls, String title, String content)
     {
@@ -29,7 +29,7 @@ public class NotificationScheduler {
         stackBuilder.addNextIntent(notificationIntent);
 
         PendingIntent pendingIntent = stackBuilder.getPendingIntent(
-                DAILY_REMINDER_REQUEST_CODE,PendingIntent.FLAG_UPDATE_CURRENT);
+                NEW_CHALLENGE_REMINDER_REQUEST_CODE,PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
         Notification notification = builder.setContentTitle(title)
@@ -39,6 +39,6 @@ public class NotificationScheduler {
 
         NotificationManager notificationManager = (NotificationManager)
                 context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(DAILY_REMINDER_REQUEST_CODE, notification);
+        notificationManager.notify(NEW_CHALLENGE_REMINDER_REQUEST_CODE, notification);
     }
 }
