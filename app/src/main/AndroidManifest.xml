@@ -10,8 +10,13 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <service android:name=".Receiver2" android:enabled="true">
-        <intent-filter> <action android:name="NOTIFICATION_SERVICE" /></intent-filter>
+
+    <service
+        android:name=".Receiver2"
+        android:enabled="true">
+        <intent-filter>
+            <action android:name="NOTIFICATION_SERVICE" />
+        </intent-filter>
     </service>
 
     <application
@@ -46,6 +51,15 @@
             </intent-filter>
         </activity>
         <activity android:name=".Favourite" />
+        <activity android:name=".NotificationActivity" />
+
+        <receiver android:name=".AlarmReceiver">
+            <intent-filter>
+                <action android:name="android.media.action.DISPLAY_NOTIFICATION" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

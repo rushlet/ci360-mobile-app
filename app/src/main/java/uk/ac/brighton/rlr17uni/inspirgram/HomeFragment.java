@@ -1,10 +1,13 @@
 package uk.ac.brighton.rlr17uni.inspirgram;
 
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Parcel;
@@ -26,20 +29,21 @@ import com.darsh.multipleimageselect.models.Image;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.ALARM_SERVICE;
 
 public class HomeFragment extends Fragment implements Parcelable{
     private static final int PICK_IMAGE = 1;
     private static final String TAG = "Home Frag";
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_TAKE_PHOTO = 1;
+    static final int DAILY_REMINDER_REQUEST_CODE = 001;
     ArrayList<Image> SELECTED_IMAGES_ARRAY;
     private FragmentManager supportFragmentManager;
     private Context mContext = this.getContext();
-
-
 
     public HomeFragment() {
         // Required empty public constructor
@@ -69,6 +73,7 @@ public class HomeFragment extends Fragment implements Parcelable{
 
         if (dateTriggered == "not set") {
             databasecontroller.setChallenge(currentChallenge.getId(), currentChallenge);
+
         } else {
             String dateCompleteBy = currentChallenge.getCompletionDate();
             try {
@@ -102,14 +107,14 @@ public class HomeFragment extends Fragment implements Parcelable{
             }
         });
 
-        ImageButton camera = (ImageButton) rootView.findViewById(R.id.imageButton_camera);
-        camera.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view) {
-                sendNotification();
-            }
-        });
+//        ImageButton camera = (ImageButton) rootView.findViewById(R.id.imageButton_camera);
+//        camera.setOnClickListener(new View.OnClickListener()
+//        {
+//            @Override
+//            public void onClick(View view) {
+//                openCamera();
+//            }
+//        });
         return rootView;
     }
 
@@ -150,27 +155,6 @@ public class HomeFragment extends Fragment implements Parcelable{
             openFavourites.putExtras(b);
             startActivity(openFavourites);
         }
-    }
-
-    public void sendNotification() {
-        Intent intent = new Intent(mContext, HomeFragment.class);
-        PendingIntent contentIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        NotificationCompat.Builder b = new NotificationCompat.Builder(mContext);
-
-        b.setAutoCancel(true)
-                .setDefaults(Notification.DEFAULT_ALL)
-                .setWhen(System.currentTimeMillis())
-                .setSmallIcon(R.drawable.home_inspiration)
-                .setContentTitle("Default notification")
-                .setContentText("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
-                .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_SOUND)
-                .setContentIntent(contentIntent)
-                .setContentInfo("Info");
-
-
-        NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(1, b.build());
     }
 
     // created using parcelable generator
