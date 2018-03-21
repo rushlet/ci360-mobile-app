@@ -82,15 +82,12 @@ public class Challenge {
     public static void scheduleNotifications(Context context) {
         // called when date triggered and complete set
         long dayInMilli = 1000 * 60 * 60 * 24;
-
-        //schedule test alarm
-        createNotification(context, 1, 20000);
         //schedule reminder
-        createNotification(context, 2, (2*dayInMilli));
+        createNotification(context, 1, (2*dayInMilli));
         //schedule final
-        createNotification(context, 3, (5*dayInMilli));
+        createNotification(context, 2, (5*dayInMilli));
         //schedule new
-        createNotification(context, 4, (6*dayInMilli));
+        createNotification(context, 3, (6*dayInMilli));
     }
 
     private static void createNotification(Context mContext, int id, long time) {

@@ -32,19 +32,18 @@ public class AlarmReceiver extends BroadcastReceiver{
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 
         switch (scenario) {
-            case 1: builder.setContentTitle("Testing").setContentText("testing 123...");
+            case 1: builder.setContentTitle("Challenge waiting").setContentText("Don't forget to upload your photos...");
                 break;
-            case 2: builder.setContentTitle("Challenge waiting").setContentText("Don't forget to upload your photos...");
+            case 2: builder.setContentTitle("Last chance!").setContentText("Challenge will expire tomorrow, upload your photos now");
                 break;
-            case 3: builder.setContentTitle("Last chance!").setContentText("Challenge will expire tomorrow, upload your photos now");
-                break;
-            case 4: builder.setContentTitle("New Challenge Set").setContentText("Open to find out more...");
+            case 3: builder.setContentTitle("New Challenge Set").setContentText("Open to find out more...");
                 break;
 
             default: break;
         }
         Notification notification = builder
                 .setSmallIcon(R.drawable.home_inspiration)
+                .setAutoCancel(true)
                 .setContentIntent(pendingIntent).build();
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);

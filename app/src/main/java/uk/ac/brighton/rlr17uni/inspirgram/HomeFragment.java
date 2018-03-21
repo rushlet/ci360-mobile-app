@@ -84,6 +84,7 @@ public class HomeFragment extends Fragment implements Parcelable{
                     databasecontroller.completeChallenge(currentChallenge.getId());
                     databasecontroller.getChallenge();
                     databasecontroller.setChallenge(currentChallenge.getId(), currentChallenge);
+                    currentChallenge.scheduleNotifications(mContext);
                 }
             } catch (ParseException e) {
                 e.printStackTrace();
