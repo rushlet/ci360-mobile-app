@@ -1,21 +1,14 @@
 package uk.ac.brighton.rlr17uni.inspirgram;
 
-import android.app.AlarmManager;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.hardware.SensorManager;
+
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.NotificationCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,19 +22,15 @@ import com.darsh.multipleimageselect.models.Image;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
 import static android.app.Activity.RESULT_OK;
-import static android.content.Context.ALARM_SERVICE;
 
 public class HomeFragment extends Fragment implements Parcelable{
     private static final int PICK_IMAGE = 1;
     private static final String TAG = "Home Frag";
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_TAKE_PHOTO = 1;
-    static final int DAILY_REMINDER_REQUEST_CODE = 001;
-    static final String NOTIFICATION_ID = "notification_id";
     ArrayList<Image> SELECTED_IMAGES_ARRAY;
     private FragmentManager supportFragmentManager;
     private Context mContext = this.getContext();
