@@ -13,4 +13,6 @@
     <string name="menu_timeline">Timeline</string>
     <string name="inspiration_title">Connecting to Flickr</string>
     <string name="timeline_title">Your Progress:</string>
+    <string name="upload">Upload</string>
+    <string name="cancel">Cancel</string>
 </resources>
