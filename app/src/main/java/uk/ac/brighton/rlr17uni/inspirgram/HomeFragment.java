@@ -2,6 +2,7 @@ package uk.ac.brighton.rlr17uni.inspirgram;
 
 import android.content.Context;
 import android.content.Intent;
+
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -32,7 +33,7 @@ public class HomeFragment extends Fragment implements Parcelable{
     static final int REQUEST_TAKE_PHOTO = 1;
     ArrayList<Image> SELECTED_IMAGES_ARRAY;
     private FragmentManager supportFragmentManager;
-
+    private Context mContext = this.getContext();
 
     public HomeFragment() {
         // Required empty public constructor
@@ -62,6 +63,8 @@ public class HomeFragment extends Fragment implements Parcelable{
 
         if (dateTriggered == "not set") {
             databasecontroller.setChallenge(currentChallenge.getId(), currentChallenge);
+            currentChallenge.scheduleNotifications(mContext);
+
         } else {
             String dateCompleteBy = currentChallenge.getCompletionDate();
             try {
@@ -70,6 +73,7 @@ public class HomeFragment extends Fragment implements Parcelable{
                     databasecontroller.completeChallenge(currentChallenge.getId());
                     databasecontroller.getChallenge();
                     databasecontroller.setChallenge(currentChallenge.getId(), currentChallenge);
+                    currentChallenge.scheduleNotifications(mContext);
                 }
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -94,12 +98,22 @@ public class HomeFragment extends Fragment implements Parcelable{
                 openInspiration();
             }
         });
+
+//        ImageButton camera = (ImageButton) rootView.findViewById(R.id.imageButton_camera);
+//        camera.setOnClickListener(new View.OnClickListener()
+//        {
+//            @Override
+//            public void onClick(View view) {
+//                openCamera();
+//            }
+//        });
         return rootView;
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        this.mContext = context;
     }
 
     @Override

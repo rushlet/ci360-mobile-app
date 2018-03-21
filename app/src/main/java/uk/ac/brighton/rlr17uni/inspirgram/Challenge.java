@@ -1,15 +1,16 @@
 package uk.ac.brighton.rlr17uni.inspirgram;
 
-import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
-import android.os.Bundle;
-import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static java.security.AccessController.getContext;
+import java.util.Calendar;
 
 /**
  * Created by rushlet on 27/11/2017.
@@ -76,5 +77,30 @@ public class Challenge {
 
     public static JSONArray allFavourites() {
         return favourites;
+    }
+
+    public static void scheduleNotifications(Context context) {
+        // called when date triggered and complete set
+        long dayInMilli = 1000 * 60 * 60 * 24;
+        //schedule reminder
+        createNotification(context, 1, (2*dayInMilli));
+        //schedule final
+        createNotification(context, 2, (5*dayInMilli));
+        //schedule new
+        createNotification(context, 3, (6*dayInMilli));
+    }
+
+    private static void createNotification(Context mContext, int id, long time) {
+        AlarmManager alarmManager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
+
+        Intent notificationIntent = new Intent("android.media.action.DISPLAY_NOTIFICATION");
+        notificationIntent.addCategory("android.intent.category.DEFAULT");
+        notificationIntent.putExtra("NOTIFICATION_ID", id);
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, id, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Calendar cal = Calendar.getInstance();
+
+        alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis() + time, pendingIntent);
     }
 }
