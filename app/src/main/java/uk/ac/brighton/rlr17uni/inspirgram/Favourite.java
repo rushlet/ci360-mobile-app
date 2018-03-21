@@ -34,20 +34,13 @@ public class Favourite extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favourite);
 
-        final Activity activity = this;
         final Context context = this;
-
         final String TAG = "isFavourite";
-
         final DatabaseController databasecontroller =  new DatabaseController(this);
-
         final ArrayList<Image> images = getIntent().getParcelableArrayListExtra("image_uris");
-
         final GridView gridview = findViewById(R.id.favourite__gridview);
         gridview.setAdapter(new ImageAdapter(this, images));
-
         final ImageView favouriteImage = findViewById(R.id.favourite__selectedImage);
-
         final Button nextButton = findViewById(R.id.favourite__nextButton);
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {

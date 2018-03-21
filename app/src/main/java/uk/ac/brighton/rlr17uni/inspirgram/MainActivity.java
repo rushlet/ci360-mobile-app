@@ -32,12 +32,8 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private String mActivityTitle;
     ArrayList<Image> SELECTED_IMAGES_ARRAY;
-    private static int MY_PERMISSIONS_CAMERA = 1024;
-    private static int MY_PERMISSIONS_READ_STORAGE = 1025;
-    private static int MY_PERMISSIONS_WRITE_STORAGE = 1026;
-    private static int MY_PERMISSIONS_MEDIA = 1027;
 
-
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

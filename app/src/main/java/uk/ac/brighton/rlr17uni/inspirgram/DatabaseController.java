@@ -228,7 +228,6 @@ public class DatabaseController extends SQLiteOpenHelper {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
     }
 
     public void getFavourites() throws JSONException {
