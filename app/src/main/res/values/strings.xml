@@ -3,6 +3,7 @@
     <string name="challenge_intro">This week\'s challenge:</string>
     <string name="challenge">EXAMPLE</string>
     <string name="favourite_title">Select Your Favourite</string>
+    <string name="overall_favourite_title">Select Your Overall Favourite</string>
     <string name="next">Next</string>
     <string name="overallFavourite">Update Challenge Favourite</string>
     <string name="drawer_open">Open navigation drawer</string>
@@ -13,4 +14,6 @@
     <string name="menu_timeline">Timeline</string>
     <string name="inspiration_title">Connecting to Flickr</string>
     <string name="timeline_title">Your Progress:</string>
+    <string name="upload">Upload</string>
+    <string name="cancel">Cancel</string>
 </resources>

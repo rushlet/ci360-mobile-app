@@ -4,17 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="uk.ac.brighton.rlr17uni.inspirgram.MainActivity">
+    tools:context="uk.ac.brighton.rlr17uni.inspirgram.OverallFavourite">
 
     <TextView
-        android:id="@+id/favourite__selectText"
+        android:id="@+id/overall__selectText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
         android:ems="10"
-        android:text="@string/favourite_title"
+        android:text="@string/overall_favourite_title"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:textSize="24sp"
@@ -23,10 +23,10 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/favourite__nextButton"
+        android:id="@+id/overall__button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/next"
+        android:text="@string/overallFavourite"
         android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="8dp"
@@ -36,7 +36,7 @@
         />
 
     <ImageView
-        android:id="@+id/favourite__selectedImage"
+        android:id="@+id/overall__selectedImage"
         android:layout_width="218dp"
         android:layout_height="175dp"
         app:srcCompat="@drawable/highlight"
@@ -45,14 +45,14 @@
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/favourite__gridview"
+        app:layout_constraintBottom_toTopOf="@+id/overall__gridview"
         android:layout_marginTop="8dp"
         app:layout_constraintTop_toBottomOf="@+id/favourite__selectText" />
 
     <GridView
-        android:id="@+id/favourite__gridview"
-        android:layout_width="341dp"
-        android:layout_height="280dp"
+        android:id="@+id/overall__gridview"
+        android:layout_width="343dp"
+        android:layout_height="223dp"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
@@ -68,6 +68,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/favourite__selectedImage"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        tools:layout_editor_absoluteY="280dp"
+        tools:layout_editor_absoluteX="8dp" />
 
 </android.support.constraint.ConstraintLayout>

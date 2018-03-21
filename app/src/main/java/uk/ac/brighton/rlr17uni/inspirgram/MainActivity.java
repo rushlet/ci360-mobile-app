@@ -1,5 +1,10 @@
 package uk.ac.brighton.rlr17uni.inspirgram;
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -28,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private String mActivityTitle;
     ArrayList<Image> SELECTED_IMAGES_ARRAY;
 
-
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_placeholder, fragment, "home_fragment");
         ft.commit();
+
+        requestAppPermissions();
     }
 
 //    http://blog.teamtreehouse.com/add-navigation-drawer-android
@@ -134,8 +141,8 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, Constants.REQUEST_CODE);
     }
 
-    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.REQUEST_CODE && resultCode == RESULT_OK && data != null) {
             //The array list has the image paths of the selected images
             ArrayList<Image> images = data.getParcelableArrayListExtra(Constants.INTENT_EXTRA_IMAGES);
@@ -145,6 +152,17 @@ public class MainActivity extends AppCompatActivity {
             b.putParcelableArrayList("image_uris", SELECTED_IMAGES_ARRAY);
             openFavourites.putExtras(b);
             startActivity(openFavourites);
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void requestAppPermissions() {
+        if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_GRANTED) {
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, 1);
         }
     }
 }
