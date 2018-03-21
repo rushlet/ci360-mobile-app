@@ -16,6 +16,11 @@ import android.support.v4.app.TaskStackBuilder;
 public class AlarmReceiver extends BroadcastReceiver{
     @Override
     public void onReceive(Context context, Intent intent) {
+
+        Intent received = intent;
+        int scenario = received.getIntExtra("NOTIFICATION_ID", 0);
+
+
         Intent notificationIntent = new Intent(context, MainActivity.class);
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
@@ -26,9 +31,24 @@ public class AlarmReceiver extends BroadcastReceiver{
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 
+        switch (scenario) {
+            case 1: {
+                builder.setContentTitle("Testing").setContentText("testing 123...");
+            }
+            case 2: {
+                builder.setContentTitle("Challenge waiting").setContentText("Don't forget to upload your photos...");
+            }
+            case 3: {
+                builder.setContentTitle("Last chance!").setContentText("Challenge will expire tomorrow, upload your photos now");
+            }
+            case 4: {
+                builder.setContentTitle("New Challenge Set").setContentText("Open to find out more...");
+            }
+            default: {
+                break;
+            }
+        }
         Notification notification = builder
-                .setContentTitle("New Challenge Set")
-                .setContentText("Open to find out more...")
                 .setSmallIcon(R.drawable.home_inspiration)
                 .setContentIntent(pendingIntent).build();
 

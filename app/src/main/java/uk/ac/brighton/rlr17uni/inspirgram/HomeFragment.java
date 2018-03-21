@@ -41,6 +41,7 @@ public class HomeFragment extends Fragment implements Parcelable{
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_TAKE_PHOTO = 1;
     static final int DAILY_REMINDER_REQUEST_CODE = 001;
+    static final String NOTIFICATION_ID = "notification_id";
     ArrayList<Image> SELECTED_IMAGES_ARRAY;
     private FragmentManager supportFragmentManager;
     private Context mContext = this.getContext();
@@ -73,6 +74,7 @@ public class HomeFragment extends Fragment implements Parcelable{
 
         if (dateTriggered == "not set") {
             databasecontroller.setChallenge(currentChallenge.getId(), currentChallenge);
+            currentChallenge.scheduleNotifications(mContext);
 
         } else {
             String dateCompleteBy = currentChallenge.getCompletionDate();
