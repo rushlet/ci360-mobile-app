@@ -86,11 +86,11 @@ public class Challenge {
         //schedule test alarm
         createNotification(context, 1, 20000);
         //schedule reminder
-        createNotification(context, 2, (3*dayInMilli));
+        createNotification(context, 2, (2*dayInMilli));
         //schedule final
-        createNotification(context, 3, (6*dayInMilli));
+        createNotification(context, 3, (5*dayInMilli));
         //schedule new
-        createNotification(context, 4, (7*dayInMilli));
+        createNotification(context, 4, (6*dayInMilli));
     }
 
     private static void createNotification(Context mContext, int id, long time) {
