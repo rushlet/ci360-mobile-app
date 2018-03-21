@@ -1,5 +1,10 @@
 package uk.ac.brighton.rlr17uni.inspirgram;
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -27,6 +32,10 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private String mActivityTitle;
     ArrayList<Image> SELECTED_IMAGES_ARRAY;
+    private static int MY_PERMISSIONS_CAMERA = 1024;
+    private static int MY_PERMISSIONS_READ_STORAGE = 1025;
+    private static int MY_PERMISSIONS_WRITE_STORAGE = 1026;
+    private static int MY_PERMISSIONS_MEDIA = 1027;
 
 
     @Override
@@ -47,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_placeholder, fragment, "home_fragment");
         ft.commit();
+
+        requestAppPermissions();
     }
 
 //    http://blog.teamtreehouse.com/add-navigation-drawer-android
@@ -145,6 +156,17 @@ public class MainActivity extends AppCompatActivity {
             b.putParcelableArrayList("image_uris", SELECTED_IMAGES_ARRAY);
             openFavourites.putExtras(b);
             startActivity(openFavourites);
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void requestAppPermissions() {
+        if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_GRANTED) {
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, 1);
         }
     }
 }

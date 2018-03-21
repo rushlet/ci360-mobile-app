@@ -2,14 +2,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="uk.ac.brighton.rlr17uni.inspirgram">
 
-    <uses-feature
-        android:name="android.hardware.camera"
-        android:required="true" />
-
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
 
     <service
         android:name=".Receiver2"
@@ -21,9 +23,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/home_inspiration"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/home_inspiration"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <provider
@@ -36,7 +38,8 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -45,14 +48,17 @@
         </activity>
         <activity
             android:name="com.darsh.multipleimageselect.activities.AlbumSelectActivity"
-            android:theme="@style/MultipleImageSelectTheme">
+            android:theme="@style/MultipleImageSelectTheme"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".Favourite" />
+        <activity android:name=".Favourite"
+            android:screenOrientation="portrait"/>
 
-        <receiver android:name=".AlarmReceiver">
+        <receiver android:name=".AlarmReceiver"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.media.action.DISPLAY_NOTIFICATION" />
 
@@ -60,8 +66,10 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".UploadCamera" />
-        <activity android:name=".OverallFavourite"></activity>
+        <activity android:name=".UploadCamera"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".OverallFavourite"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>
