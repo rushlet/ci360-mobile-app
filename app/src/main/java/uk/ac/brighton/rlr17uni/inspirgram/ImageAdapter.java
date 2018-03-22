@@ -59,7 +59,7 @@ public class ImageAdapter extends BaseAdapter {
         Log.i(TAG, "getView: position: " + position);
         Picasso.with(mContext)
                 .load(uri)
-                .placeholder(R.drawable.wallpaper)
+                .placeholder(R.drawable.loading)
                 .error(R.drawable.image_placeholder)
                 .fit()
                 .centerCrop()

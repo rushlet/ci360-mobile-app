@@ -40,7 +40,7 @@ public class OverallFavourite extends AppCompatActivity {
                         Uri uri = Uri.parse(favourites.getJSONArray(position).get(0).toString());
                         Picasso.with(context)
                                 .load(uri)
-                                .placeholder(R.drawable.wallpaper)
+                                .placeholder(R.drawable.loading)
                                 .error(R.drawable.image_placeholder)
                                 .fit()
                                 .centerCrop()

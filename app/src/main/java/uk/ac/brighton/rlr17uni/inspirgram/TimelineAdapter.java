@@ -63,7 +63,7 @@ public class TimelineAdapter extends BaseAdapter {
             Uri uri = Uri.parse(favourites.getJSONObject(position).getString("photoURL"));
             Picasso.with(context)
                     .load(uri)
-                    .placeholder(R.drawable.wallpaper)
+                    .placeholder(R.drawable.loading)
                     .error(R.drawable.image_placeholder)
                     .fit()
                     .centerCrop()

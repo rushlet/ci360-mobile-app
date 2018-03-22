@@ -26,7 +26,7 @@ public class UploadCamera extends AppCompatActivity {
         ImageView image = (ImageView) findViewById(R.id.upload_imageView);
         Picasso.with(mContext)
                 .load(Uri.parse(filepath))
-                .placeholder(R.drawable.wallpaper)
+                .placeholder(R.drawable.loading)
                 .error(R.drawable.image_placeholder)
                 .fit()
                 .centerCrop()

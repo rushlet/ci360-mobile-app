@@ -57,7 +57,7 @@ public class FlickrImageAdapter  extends BaseAdapter {
         Uri uri = Uri.parse(mImages[position]);
         Picasso.with(mContext)
                 .load(uri)
-                .placeholder(R.drawable.wallpaper)
+                .placeholder(R.drawable.loading)
                 .error(R.drawable.image_placeholder)
                 .fit()
                 .centerCrop()

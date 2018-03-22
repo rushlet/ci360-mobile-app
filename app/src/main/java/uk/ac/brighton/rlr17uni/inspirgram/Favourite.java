@@ -50,7 +50,7 @@ public class Favourite extends Activity {
 
                 Picasso.with(Favourite.this)
                         .load(uri)
-                        .placeholder(R.drawable.wallpaper)
+                        .placeholder(R.drawable.loading)
                         .error(R.drawable.image_placeholder)
                         .fit()
                         .centerCrop()
