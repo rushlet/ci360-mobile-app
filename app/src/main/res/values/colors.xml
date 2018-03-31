@@ -3,6 +3,7 @@
     <color name="colorPrimary">#ff891d</color>
     <color name="colorPrimaryDark">#ff6a07</color>
     <color name="colorAccent">#ff6a07</color>
+    <color name="colorText">#202020</color>
     <!--multiple image select colours-->
     <color name="multiple_image_select_primary">#ff891d</color>
     <color name="multiple_image_select_primaryDark">#ff6a07</color>

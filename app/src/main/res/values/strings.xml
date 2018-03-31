@@ -2,7 +2,12 @@
     <string name="app_name">Inspirgram</string>
     <string name="challenge_intro">This week\'s challenge:</string>
     <string name="challenge">EXAMPLE</string>
-    <string name="home_intro">Use the buttons below to upload photos from your gallery, take a photo or find examples of photos matching this week\'s challenge.</string>
+    <string name="home_gallery">Gallery</string>
+    <string name="home_inspire">Inspire Me</string>
+    <string name="home_camera">Camera</string>
+    <string name="home_gallery_description">Gallery Button</string>
+    <string name="home_inspire_description">Inspire Me Button</string>
+    <string name="home_camera_description">Camera Button</string>
     <string name="favourite_title">Select Your Favourite</string>
     <string name="overall_favourite_title">Select Your Overall Favourite</string>
     <string name="next">Next</string>
